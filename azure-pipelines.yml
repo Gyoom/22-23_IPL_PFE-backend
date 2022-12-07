@@ -24,7 +24,7 @@ stages:
       - script: |
           npm i -g @nestjs/cli
           npm install
-          nest build
+          npm start:prod
         displayName: 'npm install and build'
       - task: ArchiveFiles@2
         inputs:
