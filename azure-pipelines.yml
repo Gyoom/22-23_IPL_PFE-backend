@@ -55,8 +55,8 @@ stages:
             displayName: 'Deploy App Service'
             inputs:
               azureSubscription: 'Azure for Students (c002ead6-edd9-4b70-94cb-9e8e65b23d6e)'
-              appType: 'webApp'
-              appName: 'backend-nestjs-dev'
+              appType: 'webAppLinux'
+              appName: 'testLinuxGyoom'
               package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               runtimeStack: 'NODE|16-lts'
 
