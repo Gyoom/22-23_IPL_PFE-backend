@@ -22,7 +22,6 @@ stages:
           versionSpec: '16.x'
         displayName: 'Install Node.js'
       - script: |
-          npm i -g @nestjs/cli
           npm install
           npm run build
         displayName: 'npm install and build'
