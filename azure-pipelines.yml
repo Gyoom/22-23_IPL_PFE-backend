@@ -27,7 +27,7 @@ stages:
         displayName: 'npm install and build'
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(system.defaultWorkingDirectory)/dist'
+          rootFolderOrFile: '$(system.defaultWorkingDirectory)'
           includeRootFolder: false
       - task: PublishBuildArtifacts@1
 
