@@ -67,7 +67,7 @@ stages:
           deploy:
             steps:
             - task: AzureWebApp@1
-              displayName: 'Deploy App Service'
+              displayName: 'Deploy App Service to production'
               inputs:
                 azureSubscription: 'Azure for Students (c002ead6-edd9-4b70-94cb-9e8e65b23d6e)'
                 appType: 'webApp'
