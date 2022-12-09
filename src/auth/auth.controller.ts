@@ -8,6 +8,7 @@ import {
   Get,
   Req,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { RegisterUserDto } from '../users/dto/user-register.dto';
 import { RegistrationStatus } from './interfaces/regisration-status.interface';
@@ -38,6 +39,7 @@ export class AuthController {
 
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto): Promise<LoginStatus> {
+    Logger.log(loginUserDto);
     return await this.authService.login(loginUserDto);
   }
 

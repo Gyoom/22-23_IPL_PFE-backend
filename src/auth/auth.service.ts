@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { RegisterUserDto } from '../users/dto/user-register.dto';
 import { RegistrationStatus } from './interfaces/regisration-status.interface';
 import { UsersService } from '../users/users.service';
@@ -34,6 +34,7 @@ export class AuthService {
   }
 
   async login(loginUserDto: LoginUserDto): Promise<LoginStatus> {
+    Logger.log(loginUserDto);
     // find user in db
     const user = await this.usersService.findByUsername(loginUserDto.username);
 

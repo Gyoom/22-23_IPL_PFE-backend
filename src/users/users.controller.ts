@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Logger } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Logger, Param } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 
@@ -8,9 +8,9 @@ export class UsersController {
         private usersService: UsersService,
     ){}
     
-    @Get()
-    public async getOne(@Body() username: string): Promise<any> {
-        Logger.log(username);
-        return await this.usersService.findByUsername(username);
+    @Get(':username')
+    public async getOne(@Param() param): Promise<any> {
+        Logger.log("Requests : /users/" + param.username);
+        return await this.usersService.findByUsername(param.username);
     }
 }
