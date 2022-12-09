@@ -10,6 +10,6 @@ async function bootstrap() {
   app.enableCors();
   await app.listen(port || 8080);
 
-  Logger.log(`Server started running onhttp://localhost:${port}`, 'Bootstrap');
+  Logger.log(`Server started running on http://localhost:${port}`, 'Bootstrap');
 }
 bootstrap();
