@@ -1,0 +1,25 @@
+
+### get de base --> juste le hello world
+GET http://localhost:4000/
+
+
+### get tout les users
+GET http://localhost:4000/users
+
+### get user by id
+GET http://localhost:4000/users/18
+
+
+### get all friends
+GET http://localhost:4000/users/friendsOf/18
+
+### create user
+POST http://localhost:4000/users
+content-type: application/json
+
+{
+    "username":"romualde",
+    "email":"romualde@gmail.com"
+}
+    
+
