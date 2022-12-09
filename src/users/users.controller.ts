@@ -1,13 +1,16 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Logger } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-    constructor(private readonly usersService: UsersService){}
+    constructor(
+        private usersService: UsersService,
+    ){}
     
     @Get()
-    public async getOne(@Body() username: String): Promise<UserDto> {
-        return await this.usersService.findOne(username);
+    public async getOne(@Body() username: string): Promise<any> {
+        Logger.log(username);
+        return await this.usersService.findByUsername(username);
     }
 }

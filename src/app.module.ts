@@ -5,7 +5,9 @@ import { UsersModule } from './users/users.module';
 import { Neo4jModule } from 'nest-neo4j'
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { UsersController } from './users/users.controller';
 import { AuthController } from './auth/auth.controller';
+import { UsersService } from './users/users.service';
 
 const dbPort = process.env.DBPORT;
 const dbHost = process.env.DBHOST;
@@ -23,7 +25,7 @@ const dbPassword = process.env.DBPASSWORD;
       username: dbUsername,
       password: dbPassword
     })],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController, AuthController, UsersController],
+  providers: [AppService, AuthService, UsersService],
 })
 export class AppModule {}
