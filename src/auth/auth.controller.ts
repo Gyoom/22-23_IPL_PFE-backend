@@ -26,6 +26,8 @@ export class AuthController {
   public async register(
     @Body() createUserDto: RegisterUserDto,
   ): Promise<RegistrationStatus> {
+    Logger.log("Request : /auth/register");
+
     const result: RegistrationStatus = await this.authService.register(
       createUserDto,
     );
@@ -39,13 +41,14 @@ export class AuthController {
 
   @Post('login')
   public async login(@Body() loginUserDto: LoginUserDto): Promise<LoginStatus> {
-    Logger.log(loginUserDto);
+    Logger.log("Request : /auth/login");
     return await this.authService.login(loginUserDto);
   }
 
   @Get('whoami')
   @UseGuards(AuthGuard())
   public async testAuth(@Req() req: any): Promise<JwtPayload> {
+    Logger.log("Request : /auth/whoami");
     return req.user;
   }
 }

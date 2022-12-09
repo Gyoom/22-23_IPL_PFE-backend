@@ -34,7 +34,6 @@ export class AuthService {
   }
 
   async login(loginUserDto: LoginUserDto): Promise<LoginStatus> {
-    Logger.log(loginUserDto);
     // find user in db
     const user = await this.usersService.findByUsername(loginUserDto.username);
 
