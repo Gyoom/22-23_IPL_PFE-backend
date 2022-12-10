@@ -1,9 +1,9 @@
 import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
-import { RegisterUserDto } from '../users/dto/user-register.dto';
+
 import { RegistrationStatus } from './interfaces/regisration-status.interface';
 import { UsersService } from '../users/users.service';
 import { LoginStatus } from './interfaces/login-status.interface';
-import { LoginUserDto } from '../users/dto/user-login.dto';
+
 import { UserDto } from '../users/dto/user.dto';
 import { JwtPayload } from './interfaces/payload.interface';
 import { JwtService } from '@nestjs/jwt';
@@ -15,7 +15,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(userDto: RegisterUserDto): Promise<RegistrationStatus> {
+  async register(userDto: UserDto): Promise<RegistrationStatus> {
     let status: RegistrationStatus = {
       success: true,
       message: 'user registered',
@@ -33,7 +33,7 @@ export class AuthService {
     return status;
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<LoginStatus> {
+  async login(loginUserDto: UserDto): Promise<LoginStatus> {
     // find user in db
     const user = await this.usersService.findByUsername(loginUserDto.username);
 

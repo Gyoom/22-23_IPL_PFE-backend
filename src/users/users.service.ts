@@ -1,8 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
-import { Neo4jService } from 'nest-neo4j';
-import { toUserDto } from 'src/shared/mapper';
-import { RegisterUserDto } from './dto/user-register.dto';
+import { Neo4jService } from '../neo4j/neo4j.service';
 
 @Injectable()
 export class UsersService {
@@ -16,7 +14,7 @@ export class UsersService {
         return res.records[0].get('user');
     }
 
-    async create(user: RegisterUserDto){
+    async create(user: UserDto){
         const res = await this.neo4jService.write('CREATE (user:USER{name: $name, age: $age, mail: $mail, mdp: $mdp})', {name: user.username, age: '22', mail: user.email, mdp: user.password})
 
         return res;

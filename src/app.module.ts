@@ -2,30 +2,34 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { Neo4jModule } from 'nest-neo4j'
+import { Neo4jConfig } from './neo4j/neo4j-config.interface';
 import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
-import { UsersController } from './users/users.controller';
-import { AuthController } from './auth/auth.controller';
-import { UsersService } from './users/users.service';
+import { Neo4jModule } from './neo4j/neo4j.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-const dbPort = process.env.DBPORT;
-const dbHost = process.env.DBHOST;
-const dbUsername = process.env.DBUSERNAME;
-const dbPassword = process.env.DBPASSWORD;
+
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     AuthModule,
-    Neo4jModule.forRoot({
-      scheme: 'neo4j',
-      host: dbHost,
-      port: dbPort,
-      username: dbUsername,
-      password: dbPassword
-    })],
-  controllers: [AppController, AuthController, UsersController],
-  providers: [AppService, AuthService, UsersService],
+    Neo4jModule.forRootAsync({
+      imports: [ ConfigModule ],
+      inject: [ ConfigService, ],
+      useFactory: (configService: ConfigService) : Neo4jConfig => ({
+        scheme: configService.get('NEO4J_SCHEME'),
+        host: configService.get('NEO4J_HOST'),
+        port: configService.get('NEO4J_PORT'),
+        username: configService.get('NEO4J_USERNAME'),
+        password: configService.get('NEO4J_PASSWORD'),
+        database: configService.get('NEO4J_DATABASE'),
+      })
+    }),
+    AuthModule,
+    UsersModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService,],
 })
 export class AppModule {}
