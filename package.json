@@ -31,7 +31,13 @@
     "bcrypt": "^5.1.0",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.3",
+<<<<<<< HEAD
     "nest-neo4j": "^0.2.0",
+=======
+    "neo4j-driver": "^5.3.0",
+    "nest-neo4j": "^0.2.0",
+    "passport-jwt": "^4.0.0",
+>>>>>>> d2904914a5a3bcb02aae12c31bc999bd9e8fdf2b
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
