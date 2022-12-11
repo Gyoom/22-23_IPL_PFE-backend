@@ -18,6 +18,7 @@ const dbPassword = process.env.DBPASSWORD;
   imports: [
     UsersModule,
     AuthModule,
+    
     Neo4jModule.forRoot({
       scheme: 'neo4j',
       host: dbHost,
