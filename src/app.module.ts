@@ -23,7 +23,8 @@ const dbPassword = process.env.DBPASSWORD;
       host: dbHost,
       port: dbPort,
       username: dbUsername,
-      password: dbPassword
+      password: dbPassword,
+      
     })],
   controllers: [AppController, AuthController, UsersController],
   providers: [AppService, AuthService, UsersService],
