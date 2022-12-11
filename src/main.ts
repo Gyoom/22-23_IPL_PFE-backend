@@ -17,9 +17,3 @@ async function bootstrap() {
   Logger.log(`Server started running on http://localhost:${port}`, 'Bootstrap');
 }
 bootstrap();
-const cors=require("cors");
-const corsOptions ={
-   origin:'*', 
-   credentials:true,            //access-control-allow-credentials:true
-   optionSuccessStatus:200,
-}
