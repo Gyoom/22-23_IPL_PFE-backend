@@ -14,7 +14,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     AuthModule,
-<<<<<<< HEAD
     Neo4jModule.forRootAsync({
       imports: [ ConfigModule ],
       inject: [ ConfigService, ],
@@ -32,18 +31,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   ],
   controllers: [AppController],
   providers: [AppService,],
-=======
-    
-    Neo4jModule.forRoot({
-      scheme: 'neo4j',
-      host: dbHost,
-      port: dbPort,
-      username: dbUsername,
-      password: dbPassword,
-      
-    })],
-  controllers: [AppController, AuthController, UsersController],
-  providers: [AppService, AuthService, UsersService],
->>>>>>> 1ee38ef2edef9ac4817d7534c0881546e4be01e2
+
 })
 export class AppModule {}
