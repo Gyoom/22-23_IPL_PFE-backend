@@ -10,7 +10,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:4200',
-      'https://frontend-angular-dev.azurewebsites.net/',
+      'https://frontend-angular-dev.azurewebsites.net',
     ],
     methods: ["GET", "POST"],
     preflightContinue: false,
