@@ -6,14 +6,13 @@ import { Neo4jConfig } from './neo4j/neo4j-config.interface';
 import { AuthModule } from './auth/auth.module';
 import { Neo4jModule } from './neo4j/neo4j.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EventsModule } from './events/events.module';
 
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    UsersModule,
-    AuthModule,
+    ConfigModule.forRoot({ isGlobal: true }),    
     Neo4jModule.forRootAsync({
       imports: [ ConfigModule ],
       inject: [ ConfigService, ],
@@ -26,8 +25,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         database: configService.get('NEO4J_DATABASE'),
       })
     }),
+    EventsModule,
     AuthModule,
     UsersModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService,],

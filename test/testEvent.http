@@ -1,0 +1,22 @@
+### get event OK
+GET http://localhost:4000/events/4
+content-type: application/json
+
+
+
+### create event
+POST http://localhost:4000/events/create
+content-type: application/json
+
+{
+    "name":"newEvent",
+    "starting_date":"15-12-2022",
+    "ending_date":"25-12-2022",
+    "description":"description",
+    "username":"antony" 
+
+}
+
+
+            
+    

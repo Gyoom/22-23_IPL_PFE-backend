@@ -8,7 +8,7 @@ export class UserDto {
   username: string;
 
   @IsNotEmpty() 
-  @IsEmail() 
+  @IsEmail()  
   email: string;
 
    @IsNotEmpty()
