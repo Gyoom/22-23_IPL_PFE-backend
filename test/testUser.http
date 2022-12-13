@@ -18,3 +18,12 @@ content-type: application/json
     "usernameSender":"tom",
     "usernameReciever":"yseut"
 }
+
+###REMOVE friends
+DELETE  http://localhost:4000/users/removeFriends
+content-type: application/json
+
+{
+    "usernameSender":"tom",
+    "usernameReciever":"yseut"
+}

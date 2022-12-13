@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Logger, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Logger, Param, Post, Put } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UserFriendDto } from './dto/userFriends.dto';
 import { UsersService } from './users.service';
@@ -31,5 +31,10 @@ export class UsersController {
     public async putNewFriend(@Body() userFriendDto: UserFriendDto  ){
         Logger.log("request : /newfriend" + userFriendDto);
         return await this.usersService.createFriends(userFriendDto);
+    }
+    @Delete('/removeFriends')
+    public async deleteFriend(@Body() userFriendDto: UserFriendDto  ){
+        Logger.log("request : /removeFriends" + userFriendDto);
+        return await this.usersService.deleteFriends(userFriendDto);
     }
 }
