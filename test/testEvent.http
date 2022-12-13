@@ -16,7 +16,7 @@ POST http://localhost:4000/events/create
 content-type: application/json
 
 {
-    "name":"newEvent",
+    "name":"newEvt",
     "starting_date":"15-12-2022",
     "ending_date":"25-12-2022",
     "description":"description",
