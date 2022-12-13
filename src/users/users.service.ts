@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
-import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
+import { Neo4jService } from 'nest-neo4j/dist';
 
 @Injectable()
 export class UsersService {
@@ -26,6 +26,7 @@ export class UsersService {
     }
 
     async findByPayload(options?: object){
+        //TODO Fill in Method
         return null;
     }
 
