@@ -7,9 +7,29 @@ content-type: application/json
 GET http://localhost:4000/events/10
 content-type: application/json
 
-### get all events
+### delete event
+DELETE http://localhost:4000/events/delete
+content-type: application/json
 
+{
+    "id":"8bb9d91c-1db8-4a23-b1d3-766114b56c1b"
+}
+
+### get all events
 GET http://localhost:4000/events/
+
+### update event
+PUT http://localhost:4000/events/3fbecb82-ef53-4c14-8aca-c844523e25c0/update
+content-type: application/json
+
+{
+    "name":"modifiedEvent",
+    "starting_date":"15-12-2022",
+    "ending_date":"25-12-2022",
+    "description":"modifiedDescription",
+    "username":"antony" 
+}
+
 
 ### create event
 POST http://localhost:4000/events/create
