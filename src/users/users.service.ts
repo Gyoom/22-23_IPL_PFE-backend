@@ -25,7 +25,6 @@ export class UsersService {
         return;
     }
 
-    // je n'ai pas trouvé d'autre facon pour retirer les relations dans les 2 senses
     async deleteFriends(userFriendDto: UserFriendDto ): Promise<any>{
          await this.neo4jService.write('MATCH(u1:USER{username:$name1})-[r1:EST_AMIS]->(u2:USER{username:$name2})  DELETE r1',{name1: userFriendDto.usernameReciever, name2: userFriendDto.usernameSender});
          await this.neo4jService.write('MATCH(u1:USER{username:$name1})-[r1:EST_AMIS]->(u2:USER{username:$name2})  DELETE r1',{name1: userFriendDto.usernameSender, name2: userFriendDto.usernameReciever});
