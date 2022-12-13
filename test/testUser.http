@@ -1,0 +1,46 @@
+
+
+
+### get all usrers OK
+GET http://localhost:4000/users
+
+### get user by username
+GET http://localhost:4000/users/antony
+
+
+### get user by mail
+GET http://localhost:4000/users/mail/antony@gmail.com
+
+
+
+### get all friends
+GET http://localhost:4000/users/friends/to
+###put new friends OK
+POST http://localhost:4000/users/newfriends
+content-type: application/json
+
+{
+    "usernameSender":"tom",
+    "usernameReciever":"yseut"
+}
+
+###REMOVE friends
+DELETE  http://localhost:4000/users/removeFriends
+content-type: application/json
+
+{
+    "usernameSender":"tom",
+    "usernameReciever":"yseut"
+}
+
+
+###REMOVE update user
+PUT  http://localhost:4000/users/update
+content-type: application/json
+
+{
+    "id":"tom",
+    "username":"yseut NOUVEAU",
+    "email":"antony@gmail.com",
+    "password":"mdp: $2a$12$RzR/UJQ498c/VIJtPIc1Q.LbSlh3oUYdDVwOqh6hCKriPT/Fw0vbO"
+}
