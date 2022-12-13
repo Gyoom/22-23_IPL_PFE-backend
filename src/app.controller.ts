@@ -1,14 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
-import { ConfigService } from '@nestjs/config';
+import { Neo4jService } from 'nest-neo4j/dist';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly neo4jService: Neo4jService,
-    private configService: ConfigService,
     ) {}
 
   @Get()
@@ -17,17 +15,6 @@ export class AppController {
     return res    
 
    }
-
-
-@Get('/config')
-  async getConfig() {
-    return {
-      scheme: this.configService.get('NEO4J_SCHEME'),
-      host: this.configService.get('NEO4J_HOST'),
-      port: this.configService.get('NEO4J_PORT'),
-      username: this.configService.get('NEO4J_USERNAME'),
-    }
-  }
 
 @Get('/test')
  async get() {
