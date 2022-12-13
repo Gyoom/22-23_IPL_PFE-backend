@@ -10,12 +10,16 @@ import { AuthController } from './auth/auth.controller';
 import { UsersService } from './users/users.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Neo4jScheme } from 'nest-neo4j';
+import { EventsController } from './events/events.controller';
+import { EventsService } from './events/events.service';
+import { EventsModule } from './events/events.module';
 
 
 @Module({
   imports: [
     UsersModule,
     AuthModule,
+    EventsModule,
     Neo4jModule.forRootAsync({
       imports: [ ConfigModule ],
       inject: [ ConfigService ],
@@ -29,7 +33,7 @@ import { Neo4jScheme } from 'nest-neo4j';
       })
     }),
   ],
-  controllers: [AppController, AuthController, UsersController],
-  providers: [AppService, AuthService, UsersService],
+  controllers: [AppController, AuthController, UsersController, EventsController],
+  providers: [AppService, AuthService, UsersService, EventsService],
 })
 export class AppModule {}
