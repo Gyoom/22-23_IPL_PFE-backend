@@ -50,7 +50,7 @@ export class UsersService {
                 cause: error
               });
         }
-        return res.records[0].get('user');
+        return res.records[0].get('user').properties;
     } 
 
     async findBymail(mail: string){

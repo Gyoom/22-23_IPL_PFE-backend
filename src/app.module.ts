@@ -15,11 +15,6 @@ import { EventsService } from './events/events.service';
 import { EventsModule } from './events/events.module';
 
 
-const NEO4J_PORT = process.env.NEO4J_PORT;
-const NEO4J_HOST = process.env.NEO4J_HOST;
-const NEO4J_USERNAME = process.env.NEO4J_USERNAME;
-const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
-
 @Module({
   imports: [
     UsersModule,

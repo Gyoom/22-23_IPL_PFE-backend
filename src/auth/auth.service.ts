@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Logger, NotFoundException } from '@nestjs/common';
 
 import { RegistrationStatus } from './interfaces/regisration-status.interface';
 import { UsersService } from '../users/users.service';
@@ -7,6 +7,9 @@ import { LoginStatus } from './interfaces/login-status.interface';
 import { UserDto } from '../users/dto/user.dto';
 import { JwtPayload } from './interfaces/payload.interface';
 import { JwtService } from '@nestjs/jwt';
+import { isEmpty } from 'class-validator';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +25,33 @@ export class AuthService {
     };
 
     try {
+      const userByUsername = await this.usersService.findByUsername(userDto.username);
+      // const userByEmail = await this.usersService.findByEmail(userDto.email);
+
+      if (!isEmpty(userByUsername)){
+        status = {
+          success: false,
+          message: 'The username already exists'
+        }
+
+        return status;
+      }
+
+      // if (!isEmpty(userByEmail)){
+      //   status = {
+      //     success: false,
+      //     message: 'The email already exists'
+      //   }
+          // return status;
+      // }
+      
+      const salt = await bcrypt.genSalt();
+      const hash = await bcrypt.hash(userDto.password, salt);
+
+      userDto.password = hash;
+
       await this.usersService.create(userDto);
+
     } catch (err) {
       status = {
         success: false,
@@ -35,13 +64,27 @@ export class AuthService {
 
   async login(loginUserDto: UserDto): Promise<LoginStatus> {
     // find user in db
-    const user = await this.usersService.findByUsername(loginUserDto.username);
+    let userDb;
+    try{
+       userDb = await this.usersService.findByUsername(loginUserDto.username);  
+    } catch(err){
+      throw new NotFoundException('User has not been found');
+    }
+
+    if (isEmpty(userDb)){
+      throw new NotFoundException('User has not been found');
+    }
+
+    const isMatch = await bcrypt.compare(loginUserDto.password, userDb.mail);
 
     // generate and sign token
-    const token = this._createToken(user);
+    userDb.password = "";
+    const token = this._createToken(userDb);
 
     return {
-      username: user.username,
+      username: userDb.username,
+      email: userDb.mail,
+      age: userDb.age,
       ...token,
     };
   }
