@@ -1,8 +1,9 @@
 import { Injectable, Logger, Param } from '@nestjs/common';
 import { EventDto } from './dto/event.dto';
-import { Neo4jService } from '../neo4j/neo4j.service';
+import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
 import { v4 as uuidv4 } from 'uuid';
 import { EventDtoWithUsername } from './dto/eventWithUsername.dto';
+import { identity } from 'rxjs';
 
 @Injectable()
 export class EventsService {
@@ -27,33 +28,44 @@ export class EventsService {
         return res.records;        
     }
 
-
-    /*const res = await this.neo4jService.read(
-        `MATCH (n:USER)
-        RETURN ID(n) AS idUser , n.name AS name`
-        )
-        
-        var strReponse = ` liste de tout les users : \n `
-        res.records.forEach(i => strReponse = strReponse + `id : ${i.get('idUser')}, nom :  ${i.get('name')}  \n` )
-          
-        return strReponse;
-    */
-
     async createEvent(event: EventDtoWithUsername): Promise<Event>{
+
+        const id = uuidv4();
         const res = await this.neo4jService.write(
-            'CREATE (event:EVENT{id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}) RETURN event',            
-             {id: uuidv4(), name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description})
+            'CREATE (event:EVENT{id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}) RETURN event',
+            {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description})
              
         if ( !res.records.length ) {
             return null;
         }
         else{
+            Logger.log("création de la relation organisé par" + event.username + " event : " + event.name + " event.id " + id)
             await this.neo4jService.write(
-                'CREATE(organised_By:$eventCreated)-[:ORGANISE_PAR]->(user:$username) ',           
-                 {eventCreated: res, username: event.username})
-                 return res.records[0].get('event');
+                'MATCH (a:EVENT), (b:USER) WHERE a.id = $id AND b.username = $username CREATE (a)-[:ORGANISE_PAR]->(b)',
+                {id: id, username: event.username})
+            
+            return res.records[0].get('event');
         }
         
+    }
+
+    async deleteEvent(event : EventDto) {
+
+        Logger.log("delete de l'event avec l'id : "+ event.id);
+        await this.neo4jService.write(
+            'MATCH (a:EVENT) WHERE a.id = $id DETACH DELETE a',
+            {id: event.id}
+        )
+
+            
+    }
+
+    async updateEvent(event : EventDto) {
+        Logger.log("update de l'event avec l'id : "+ event.id);
+        await this.neo4jService.write(
+        'MATCH (a:EVENT) WHERE a.id=$id SET a={name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}',
+        {id: event.id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description}
+        )
     }
 }
 
