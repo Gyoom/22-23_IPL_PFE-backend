@@ -11,16 +11,38 @@ export class EventsService {
     ) {}
     
     async findById(@Param('id') idFromParam: string): Promise<Event>{
-        Logger.log(idFromParam);
+        
         const res = await this.neo4jService.read('MATCH (u:EVENT{id:$id}) RETURN u AS event', {id:idFromParam});
-
+        Logger.log("record" + res.records[0].get('event'));
         return res.records[0].get('event');
     }
+
+    async findAll(): Promise<any> {
+        
+        const res = await this.neo4jService.read('MATCH (u:EVENT) RETURN u');
+        
+        Logger.log("length records :" + res.records.length)
+        res.records.forEach( u => Logger.log("one event from all :" + u))
+
+        return res.records;        
+    }
+
+
+    /*const res = await this.neo4jService.read(
+        `MATCH (n:USER)
+        RETURN ID(n) AS idUser , n.name AS name`
+        )
+        
+        var strReponse = ` liste de tout les users : \n `
+        res.records.forEach(i => strReponse = strReponse + `id : ${i.get('idUser')}, nom :  ${i.get('name')}  \n` )
+          
+        return strReponse;
+    */
 
     async createEvent(event: EventDtoWithUsername): Promise<Event>{
         const res = await this.neo4jService.write(
             'CREATE (event:EVENT{id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}) RETURN event',            
-             {id: uuidv4.v4(), name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description})
+             {id: uuidv4(), name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description})
              
         if ( !res.records.length ) {
             return null;

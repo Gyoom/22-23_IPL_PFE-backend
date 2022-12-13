@@ -3,6 +3,13 @@ GET http://localhost:4000/events/4
 content-type: application/json
 
 
+### get event KO
+GET http://localhost:4000/events/10
+content-type: application/json
+
+### get all events
+
+GET http://localhost:4000/events/
 
 ### create event
 POST http://localhost:4000/events/create

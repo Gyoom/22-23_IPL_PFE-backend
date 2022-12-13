@@ -14,12 +14,19 @@ export class EventsController {
         return await this.eventsService.findById(param.id);
     }
 
+    @Get('/')
+    public async getAll(): Promise<any> {
+        Logger.log("Request : /events/" );
+        return await this.eventsService.findAll();
+    }
+
     @Post('create')
     public async createEvent(@Body() eventDtoWithUsername: EventDtoWithUsername): Promise <Event> {
         Logger.log("Request : /event/create" + eventDtoWithUsername);
 
         return await this.eventsService.createEvent(eventDtoWithUsername);
     }
+
 }
 
 
