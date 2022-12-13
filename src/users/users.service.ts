@@ -46,7 +46,7 @@ export class UsersService {
         }catch(error){
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
-                error: 'user does not exist',
+                error: 'user with this email  does not exist',
               }, HttpStatus.BAD_REQUEST, {
                 cause: error
               });
@@ -61,7 +61,22 @@ export class UsersService {
         }catch(error){
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
-                error: 'user does not exist',
+                error: 'user with this email does not exist',
+              }, HttpStatus.BAD_REQUEST, {
+                cause: error
+              });
+        }
+        return res.records[0].get('user');
+    }
+
+    async updateUser(userDTO: UserDto ): Promise<any>{
+        const res = await this.neo4jService.write('MATCH (u:USER{mail:$mail}) SET u.username=$username, u.mdp =$mdp RETURN u AS user', {mail: userDTO.email,username: userDTO.username, mdp: userDTO.password});
+        try{
+            res.records[0].get('user');
+        }catch(error){
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'user with this email does not exist',
               }, HttpStatus.BAD_REQUEST, {
                 cause: error
               });
@@ -73,14 +88,6 @@ export class UsersService {
         return null;
     }
 
-        /*
-    async getOneByID(id: string){
-       
-        const res = await this.neo4jService.read('MATCH(n:USER) WHERE ID(n) = $ID RETURN n AS user', {ID: id});
-        return res.records[0].get('user');
-    }
-    */
-  
 
 
 }

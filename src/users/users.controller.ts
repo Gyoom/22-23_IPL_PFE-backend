@@ -43,4 +43,10 @@ export class UsersController {
         Logger.log("request : /removeFriends" + userFriendDto);
         return await this.usersService.deleteFriends(userFriendDto);
     }
+
+    @Put('/update')
+    public async updateUser(@Body() UserDto: UserDto  ){
+        Logger.log("request : /removeFriends" + UserDto);
+        return await this.usersService.updateUser(UserDto);
+    }
 }
