@@ -21,6 +21,12 @@ export class UsersController {
         return await this.usersService.findByUsername(param.username);
     }
 
+    @Get('mail/:mail')
+    public async getOneByMail(@Param() param): Promise<any> {
+        Logger.log("Requests : /users/" + param.mail);
+        return await this.usersService.findBymail(param.mail);
+    }
+
     @Get('friends/:username')
     public async getAllFriends(@Param() param): Promise<any> {
         Logger.log("Requests : /users/friends" + param.username);

@@ -44,6 +44,11 @@ export class UsersService {
         return res.records[0].get('user');
     }
 
+    async findBymail(mail: string){
+        const res = await this.neo4jService.read('MATCH (u:USER{mail:$mail}) RETURN u AS user', {mail: mail });
+        return res.records[0].get('user');
+    }
+
     async findByPayload(options?: object){
         return null;
     }
