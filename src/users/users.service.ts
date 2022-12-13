@@ -21,8 +21,8 @@ export class UsersService {
     }
 
     async findByUsername(username: string){
-        const res = await this.neo4jService.read('MATCH (u:USER{name:$name}) RETURN u AS user', {name: username });
-        return res.records[0].get('user');
+        const res = await this.neo4jService.read('MATCH (u:USER{username:$name}) RETURN u AS user', {name: username });
+        return res.records[0].get('user').properties;
     }
 
     async findByPayload(options?: object){

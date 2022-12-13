@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Logger, NotFoundException } from '@nestjs/common';
 
 import { RegistrationStatus } from './interfaces/regisration-status.interface';
 import { UsersService } from '../users/users.service';
@@ -25,7 +25,6 @@ export class AuthService {
     };
 
     try {
-      // TODO Check if User already exists (username and email must be unique)
       const userByUsername = await this.usersService.findByUsername(userDto.username);
       // const userByEmail = await this.usersService.findByEmail(userDto.email);
 
@@ -46,14 +45,13 @@ export class AuthService {
           // return status;
       // }
       
-      // TODO Hash pwd
       const salt = await bcrypt.genSalt();
       const hash = await bcrypt.hash(userDto.password, salt);
 
       userDto.password = hash;
 
       await this.usersService.create(userDto);
-      
+
     } catch (err) {
       status = {
         success: false,
@@ -66,18 +64,27 @@ export class AuthService {
 
   async login(loginUserDto: UserDto): Promise<LoginStatus> {
     // find user in db
-    //TODO Find by email
-    const user = await this.usersService.findByUsername(loginUserDto.username);
+    let userDb;
+    try{
+       userDb = await this.usersService.findByUsername(loginUserDto.username);  
+    } catch(err){
+      throw new NotFoundException('User has not been found');
+    }
 
-    //TODO Check if pwd are the same
+    if (isEmpty(userDb)){
+      throw new NotFoundException('User has not been found');
+    }
+
+    const isMatch = await bcrypt.compare(loginUserDto.password, userDb.mail);
 
     // generate and sign token
-    //TODO Use only email in the token
-    const token = this._createToken(user);
+    userDb.password = "";
+    const token = this._createToken(userDb);
 
-    //TODO Return all the user except the pwd
     return {
-      username: user.username,
+      username: userDb.username,
+      email: userDb.mail,
+      age: userDb.age,
       ...token,
     };
   }
