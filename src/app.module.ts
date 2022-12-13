@@ -9,7 +9,7 @@ import { UsersController } from './users/users.controller';
 import { AuthController } from './auth/auth.controller';
 import { UsersService } from './users/users.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { Neo4jScheme } from 'nest-neo4j';
 
 
 const NEO4J_PORT = process.env.NEO4J_PORT;
@@ -25,11 +25,11 @@ const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
       imports: [ ConfigModule ],
       inject: [ ConfigService ],
       useFactory: (configService: ConfigService) : Neo4jConfig => ({
-        scheme: "bolt+s",
-        host: NEO4J_HOST,
-        port: NEO4J_PORT,
-        username: NEO4J_USERNAME,
-        password: NEO4J_PASSWORD,
+        scheme: configService.get<Neo4jScheme>('NEO4J_SCHEME'),
+        host: configService.get<string>('NEO4J_HOST'),
+        port: configService.get<string>('NEO4J_PORT'),
+        username: configService.get<string>('NEO4J_USERNAME'),
+        password: configService.get<string>('NEO4J_PASSWORD'),
         database: '',
       })
     }),
