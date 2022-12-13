@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
-import { Neo4jService } from '../neo4j/neo4j.service';
+import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
 
 @Injectable()
 export class UsersService {

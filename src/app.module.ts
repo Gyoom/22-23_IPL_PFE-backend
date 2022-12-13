@@ -2,36 +2,39 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { Neo4jConfig } from './neo4j/neo4j-config.interface';
+import { Neo4jModule } from 'nest-neo4j'
 import { AuthModule } from './auth/auth.module';
-import { Neo4jModule } from './neo4j/neo4j.module';
+import { AuthService } from './auth/auth.service';
+import { UsersController } from './users/users.controller';
+import { AuthController } from './auth/auth.controller';
+import { UsersService } from './users/users.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EventsModule } from './events/events.module';
+import { Neo4jConfig } from 'nest-neo4j/src/interfaces/neo4j-config.interface';
 
 
+const NEO4J_PORT = process.env.NEO4J_PORT;
+const NEO4J_HOST = process.env.NEO4J_HOST;
+const NEO4J_USERNAME = process.env.NEO4J_USERNAME;
+const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),    
+    UsersModule,
+    AuthModule,
     Neo4jModule.forRootAsync({
       imports: [ ConfigModule ],
-      inject: [ ConfigService, ],
+      inject: [ ConfigService ],
       useFactory: (configService: ConfigService) : Neo4jConfig => ({
-        scheme: configService.get('NEO4J_SCHEME'),
-        host: configService.get('NEO4J_HOST'),
-        port: configService.get('NEO4J_PORT'),
-        username: configService.get('NEO4J_USERNAME'),
-        password: configService.get('NEO4J_PASSWORD'),
-        database: configService.get('NEO4J_DATABASE'),
+        scheme: "bolt+s",
+        host: NEO4J_HOST,
+        port: NEO4J_PORT,
+        username: NEO4J_USERNAME,
+        password: NEO4J_PASSWORD,
+        database: '',
       })
     }),
-    EventsModule,
-    AuthModule,
-    UsersModule,
-    
   ],
-  controllers: [AppController],
-  providers: [AppService,],
-
+  controllers: [AppController, AuthController, UsersController],
+  providers: [AppService, AuthService, UsersService],
 })
 export class AppModule {}
