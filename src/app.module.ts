@@ -12,11 +12,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Neo4jScheme } from 'nest-neo4j';
 
 
-const NEO4J_PORT = process.env.NEO4J_PORT;
-const NEO4J_HOST = process.env.NEO4J_HOST;
-const NEO4J_USERNAME = process.env.NEO4J_USERNAME;
-const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
-
 @Module({
   imports: [
     UsersModule,

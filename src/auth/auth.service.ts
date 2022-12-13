@@ -7,6 +7,9 @@ import { LoginStatus } from './interfaces/login-status.interface';
 import { UserDto } from '../users/dto/user.dto';
 import { JwtPayload } from './interfaces/payload.interface';
 import { JwtService } from '@nestjs/jwt';
+import { isEmpty } from 'class-validator';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +25,35 @@ export class AuthService {
     };
 
     try {
+      // TODO Check if User already exists (username and email must be unique)
+      const userByUsername = await this.usersService.findByUsername(userDto.username);
+      // const userByEmail = await this.usersService.findByEmail(userDto.email);
+
+      if (!isEmpty(userByUsername)){
+        status = {
+          success: false,
+          message: 'The username already exists'
+        }
+
+        return status;
+      }
+
+      // if (!isEmpty(userByEmail)){
+      //   status = {
+      //     success: false,
+      //     message: 'The email already exists'
+      //   }
+          // return status;
+      // }
+      
+      // TODO Hash pwd
+      const salt = await bcrypt.genSalt();
+      const hash = await bcrypt.hash(userDto.password, salt);
+
+      userDto.password = hash;
+
       await this.usersService.create(userDto);
+      
     } catch (err) {
       status = {
         success: false,
@@ -35,11 +66,16 @@ export class AuthService {
 
   async login(loginUserDto: UserDto): Promise<LoginStatus> {
     // find user in db
+    //TODO Find by email
     const user = await this.usersService.findByUsername(loginUserDto.username);
 
+    //TODO Check if pwd are the same
+
     // generate and sign token
+    //TODO Use only email in the token
     const token = this._createToken(user);
 
+    //TODO Return all the user except the pwd
     return {
       username: user.username,
       ...token,
