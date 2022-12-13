@@ -10,6 +10,9 @@ import { AuthController } from './auth/auth.controller';
 import { UsersService } from './users/users.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Neo4jScheme } from 'nest-neo4j';
+import { EventsController } from './events/events.controller';
+import { EventsService } from './events/events.service';
+import { EventsModule } from './events/events.module';
 
 
 const NEO4J_PORT = process.env.NEO4J_PORT;
@@ -21,6 +24,7 @@ const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
   imports: [
     UsersModule,
     AuthModule,
+    EventsModule,
     Neo4jModule.forRootAsync({
       imports: [ ConfigModule ],
       inject: [ ConfigService ],
@@ -34,7 +38,7 @@ const NEO4J_PASSWORD = process.env.NEO4J_PASSWORD;
       })
     }),
   ],
-  controllers: [AppController, AuthController, UsersController],
-  providers: [AppService, AuthService, UsersService],
+  controllers: [AppController, AuthController, UsersController, EventsController],
+  providers: [AppService, AuthService, UsersService, EventsService],
 })
 export class AppModule {}
