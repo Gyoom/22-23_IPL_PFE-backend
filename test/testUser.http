@@ -5,7 +5,16 @@
 GET http://localhost:4000/users
 
 ### get user by username
-GET http://localhost:4000/users/antony
+GET http://localhost:4000/users/anto
 
 ### get all friends
 GET http://localhost:4000/users/friends/tom
+
+###put new friends OK
+POST http://localhost:4000/users/newfriends
+content-type: application/json
+
+{
+    "usernameSender":"tom",
+    "usernameReciever":"yseut"
+}

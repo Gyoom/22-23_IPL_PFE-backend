@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { Neo4jService } from '../neo4j/neo4j.service';
+import { UserFriendDto } from './dto/userFriends.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,18 +14,16 @@ export class UsersService {
         return res.records;
     }
 
-    /*
-    async getOneByID(id: string){
-       
-        const res = await this.neo4jService.read('MATCH(n:USER) WHERE ID(n) = $ID RETURN n AS user', {ID: id});
-        return res.records[0].get('user');
-    }
-    */
    async getAllFriends(username: string): Promise<any>{
-    const res = await this.neo4jService.read('MATCH(n:USER)-[:EST_AMIS]->(n2:USER{username:$name}) RETURN n.username AS username',{name: username });
+    const res = await this.neo4jService.read('MATCH(n:USER)-[:EST_AMIS]->(n2:USER{username:$name}) RETURN DISTINCT n.username AS username',{name: username });
     
     return res.records;
-}
+    }
+
+    async createFriends(userFriendDto: UserFriendDto ): Promise<any>{
+        const res = await this.neo4jService.write('MATCH(u1:USER{username:$name1}), (u2:USER{username:$name2}) CREATE (u1)-[:EST_AMIS]->(u2), (u2)-[:EST_AMIS]->(u1)',{name1: userFriendDto.usernameReciever, name2: userFriendDto.usernameSender})
+        return
+    }
 
     async create(user: UserDto){
         // on ne peut pas créer 2 users avec le meme nom
@@ -42,7 +41,13 @@ export class UsersService {
         return null;
     }
 
-
+        /*
+    async getOneByID(id: string){
+       
+        const res = await this.neo4jService.read('MATCH(n:USER) WHERE ID(n) = $ID RETURN n AS user', {ID: id});
+        return res.records[0].get('user');
+    }
+    */
   
 
 
