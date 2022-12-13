@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Neo4jService } from './neo4j/neo4j.service';
+import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
 
 @Injectable()
 export class AppService {

@@ -1,6 +1,6 @@
 import { Injectable, Logger, Param } from '@nestjs/common';
 import { EventDto } from './dto/event.dto';
-import { Neo4jService } from '../neo4j/neo4j.service';
+import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
 import { v4 as uuidv4 } from 'uuid';
 import { EventDtoWithUsername } from './dto/eventWithUsername.dto';
 import { identity } from 'rxjs';

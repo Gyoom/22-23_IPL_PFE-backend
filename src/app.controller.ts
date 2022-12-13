@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Neo4jService } from './neo4j/neo4j.service';
+import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
 import { ConfigService } from '@nestjs/config';
 
 @Controller()
