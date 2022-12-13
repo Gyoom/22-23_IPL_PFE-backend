@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
-import { Neo4jService } from 'nest-neo4j/src/neo4j.service';
+import { Neo4jService } from 'nest-neo4j/dist';
 import { UserFriendDto } from './dto/userFriends.dto';
 
 @Injectable()
@@ -41,11 +41,31 @@ export class UsersService {
 
     async findByUsername(username: string){
         const res = await this.neo4jService.read('MATCH (u:USER{username:$name}) RETURN u AS user', {name: username });
+        try{
+            res.records[0].get('user');
+        }catch(error){
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'user does not exist',
+              }, HttpStatus.BAD_REQUEST, {
+                cause: error
+              });
+        }
         return res.records[0].get('user');
-    }
+    } 
 
     async findBymail(mail: string){
         const res = await this.neo4jService.read('MATCH (u:USER{mail:$mail}) RETURN u AS user', {mail: mail });
+        try{
+            res.records[0].get('user');
+        }catch(error){
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'user does not exist',
+              }, HttpStatus.BAD_REQUEST, {
+                cause: error
+              });
+        }
         return res.records[0].get('user');
     }
 
