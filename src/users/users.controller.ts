@@ -61,7 +61,7 @@ export class UsersController {
         @Post()
         async creerUser( @Body() userdto: UserDto ): Promise<any> {
           const res = await this.neo4jService.write(
-            `CREATE (n:USER{name:'${userdto.username}', mail:'${userdto.email}'})
+            `CREATE (n:USER{name:'${userdto.name}', mail:'${userdto.mail}'})
             RETURN ID(n) AS idUser , n.name AS name`
           )
           
