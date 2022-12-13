@@ -8,16 +8,21 @@ export class UsersController {
         private readonly usersService: UsersService,
     ){}
     
-    @Get('/')
+    @Get()
     public async getAll(): Promise<any> {
-        Logger.log("Request : /users/" );
+        Logger.log("Request : /users" );
         return await this.usersService.getAllUsers();
     }
 
     @Get(':username')
-    public async getOne(@Param() param): Promise<any> {
+    public async getOneByName(@Param() param): Promise<any> {
         Logger.log("Requests : /users/" + param.username);
         return await this.usersService.findByUsername(param.username);
     }
-    
+
+    @Get('friends/:username')
+    public async getAllFriends(@Param() param): Promise<any> {
+        Logger.log("Requests : /users/friends" + param.username);
+        return await this.usersService.getAllFriends(param.username);
+    }
 }

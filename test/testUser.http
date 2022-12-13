@@ -1,5 +1,11 @@
 
 
 
-### get all usrers
-GET http://localhost:4000/users/
+### get all usrers OK
+GET http://localhost:4000/users
+
+### get user by username
+GET http://localhost:4000/users/antony
+
+### get all friends
+GET http://localhost:4000/users/friends/tom
