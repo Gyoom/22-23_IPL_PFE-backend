@@ -9,7 +9,8 @@ GET http://localhost:4000/users/anto
 
 
 ### get user by mail
-GET http://localhost:4000/users/mail/test@test.com
+GET http://localhost:4000/users/mail/tristan@gmail.com
+
 
 ### get all friends
 GET http://localhost:4000/users/friends/tom
