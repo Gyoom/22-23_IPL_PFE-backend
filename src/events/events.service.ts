@@ -43,7 +43,7 @@ export class EventsService {
         //vérifier date
         //TO DO
 
-        //check if category exists
+        /*//check if category exists
         const check1 = await this.neo4jService.read('MATCH (u:CATEGORY {name: $name}) RETURN u AS category',
         {name: event.category});
 
@@ -51,7 +51,7 @@ export class EventsService {
             Logger.log("check 1 failed, category does not exist");
             return undefined;
 
-        }
+        }*/
 
         const id = uuidv4();
         var res;
@@ -89,7 +89,7 @@ export class EventsService {
                 return undefined;
             }
 
-            Logger.log("creation of relation HAS_FOR_CATEGORY");
+            /*Logger.log("creation of relation HAS_FOR_CATEGORY");
             //creation of relation "HAS_FOR_CATEGORY"
             const res3 = await this.neo4jService.write('MATCH (a:EVENT), (b:CATEGORY) WHERE a.id = $id AND b.name = $category CREATE (a)-[:HAS_FOR_CATEGORY]->(b)',
             {id: id, category: event.category, event: event.id})
@@ -97,7 +97,7 @@ export class EventsService {
             if(res3.records.length){
                 Logger.log("relation 'ORGANIZED_BY' not created");
                 return undefined;
-            }
+            }*/
             
             return res.records[0].get('event');
         }
@@ -234,12 +234,12 @@ export class EventsService {
         }
     }
 
-    async getAllEventByCategory(@Param('category') category: string){
+    /*async getAllEventByCategory(@Param('category') category: string){
         const res = await this.neo4jService.read('MATCH (a:CATEGORY {name: $category})<-[:HAS_FOR_CATEGORY]-(b:EVENT)  RETURN a',
         {category: category}
         )
         return res;
-    }
+    }*/
 
 
    
