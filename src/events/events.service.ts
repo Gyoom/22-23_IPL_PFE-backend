@@ -100,6 +100,7 @@ export class EventsService {
             }
             
             return res.records[0].get('event');
+
         }
         
     }
