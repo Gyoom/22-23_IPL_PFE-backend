@@ -1,5 +1,5 @@
 ### get event OK
-GET http://localhost:4000/events/4
+GET http://localhost:4000/events/0de0a518-b45d-430d-b11d-4ed91ef4cf08
 content-type: application/json
 
 
@@ -39,7 +39,7 @@ content-type: application/json
     
 
 ### get all events participating
-GET  http://localhost:4000/events/register/juliette
+GET  http://localhost:4000/events/register/antony
 
 
 ### create event
@@ -58,7 +58,7 @@ content-type: application/json
 }
 
 ### participate to an event
-PUT http://localhost:4000/events/2/participate
+PUT http://localhost:4000/events/7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed/participate
 content-type: application/json
 
 {    

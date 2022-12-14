@@ -187,7 +187,7 @@ export class EventsService {
 
         //check que participe pas déjà
 
-        const check3 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:PARTICIPATATE]-(b:USER {username: $usernameInvited})  RETURN a',
+        const check3 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:PARTICIPATE]-(b:USER {username: $usernameInvited})  RETURN a',
         {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id});
         
         if(check3.records.length){
@@ -217,7 +217,7 @@ export class EventsService {
             } 
 
             //create relation
-            const res = await this.neo4jService.write('MATCH (a:USER), (b:EVENT) WHERE a.username = $usernameInvited AND b.id = $idEvent CREATE (a)-[c:PARTICIPE]->(b) RETURN c',
+            const res = await this.neo4jService.write('MATCH (a:USER), (b:EVENT) WHERE a.username = $usernameInvited AND b.id = $idEvent CREATE (a)-[c:PARTICIPATE]->(b) RETURN c',
             {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id});
         
             return res;
@@ -227,7 +227,7 @@ export class EventsService {
             //create relation
 
             Logger.log("check 4, event is not private. Creating participation")
-            const res = await this.neo4jService.write('MATCH (a:USER), (b:EVENT) WHERE a.username = $usernameInvited AND b.id = $idEvent CREATE (a)-[c:PARTICIPE]->(b) RETURN c',
+            const res = await this.neo4jService.write('MATCH (a:USER), (b:EVENT) WHERE a.username = $usernameInvited AND b.id = $idEvent CREATE (a)-[c:PARTICIPATE]->(b) RETURN c',
             {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id});
         
             return res;
