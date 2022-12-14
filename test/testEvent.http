@@ -4,7 +4,7 @@ content-type: application/json
 
 
 ### get event KO
-GET http://localhost:4000/events/10
+GET http://localhost:4000/events/1
 content-type: application/json
 
 ### delete event
@@ -12,14 +12,19 @@ DELETE http://localhost:4000/events/delete
 content-type: application/json
 
 {
-    "id":"8bb9d91c-1db8-4a23-b1d3-766114b56c1b"
+    "id":"624b66ff-581a-4cd9-814b-1bdba0af4e5a"
 }
 
 ### get all events
 GET http://localhost:4000/events/
 
+
+    // "statut":"private",
+    //"category":"Festival"
+    //does not consider change with those two for now
+    //TO DO
 ### update event
-PUT http://localhost:4000/events/3fbecb82-ef53-4c14-8aca-c844523e25c0/update
+PUT http://localhost:4000/events/9d09cdbb-3d13-4c57-b2ca-8d43d9483a3c/update
 content-type: application/json
 
 {
@@ -27,8 +32,14 @@ content-type: application/json
     "starting_date":"15-12-2022",
     "ending_date":"25-12-2022",
     "description":"modifiedDescription",
-    "username":"antony" 
+    "username":"antony"
+    
+
 }
+    
+
+### get all events participating
+GET  http://localhost:4000/events/register/juliette
 
 
 ### create event
@@ -36,13 +47,28 @@ POST http://localhost:4000/events/create
 content-type: application/json
 
 {
-    "name":"newEvt",
+    "name":"Birthday party",
     "starting_date":"15-12-2022",
     "ending_date":"25-12-2022",
     "description":"description",
-    "username":"antony" 
+    "username":"antony",
+    "statut":"private",
+    "category":"Birthday"
 
 }
+
+### participate to an event
+PUT http://localhost:4000/events/2/participate
+content-type: application/json
+
+{    
+    "username":"antony" 
+}
+
+### get all events by category
+GET http://localhost:4000/events/categories/Festival
+
+
 
 
             

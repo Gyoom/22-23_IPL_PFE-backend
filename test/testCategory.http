@@ -1,0 +1,19 @@
+### get category by name
+GET http://localhost:4000/categories/Festival
+
+### get all categories
+
+GET http://localhost:4000/categories/
+
+### create category
+
+POST http://localhost:4000/categories/createCategory
+content-type: application/json
+
+{
+    "name":"Birthday",
+    "description":"Birthday Party"
+}
+
+
+

@@ -13,6 +13,12 @@ import { Neo4jScheme } from 'nest-neo4j';
 import { EventsController } from './events/events.controller';
 import { EventsService } from './events/events.service';
 import { EventsModule } from './events/events.module';
+import { InvitesController } from './invites/invites.controller';
+import { InvitesService } from './invites/invites.service';
+import { InvitesModule } from './invites/invites.module';
+import { CategoriesController } from './categories/categories.controller';
+import { CategoriesService } from './categories/categories.service';
+import { CategoriesModule } from './categories/categories.module';
 
 
 @Module({
@@ -20,6 +26,8 @@ import { EventsModule } from './events/events.module';
     UsersModule,
     AuthModule,
     EventsModule,
+    InvitesModule,
+    CategoriesModule,
     Neo4jModule.forRootAsync({
       imports: [ ConfigModule ],
       inject: [ ConfigService ],
@@ -33,7 +41,7 @@ import { EventsModule } from './events/events.module';
       })
     }),
   ],
-  controllers: [AppController, AuthController, UsersController, EventsController],
-  providers: [AppService, AuthService, UsersService, EventsService],
+  controllers: [AppController, AuthController, UsersController, EventsController, InvitesController, CategoriesController],
+  providers: [AppService, AuthService, UsersService, EventsService, InvitesService, CategoriesService],
 })
 export class AppModule {}
