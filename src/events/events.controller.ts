@@ -67,12 +67,12 @@ export class EventsController {
         return await this.eventsService.getAllEventParticipating(param.username);
     }
 
-    //get all event by category
+    /*//get all event by category
     @Get('/categories/:category')
     public async getAllEventByCategory(@Param () param){
         Logger.log("Request : /events/categories/"+ param.category);
         return await this.eventsService.getAllEventByCategory(param.category);
-    }
+    }*/
 
     //TO DO
     //get all users participating and the organiser to an event
