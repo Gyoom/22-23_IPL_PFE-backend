@@ -19,4 +19,10 @@ export class EventDto {
   @IsNotEmpty()
   description: string;
 
+  @IsNotEmpty()
+  statut: string;
+
+  @IsNotEmpty()
+  category: string;
+
 }

@@ -22,4 +22,10 @@ export class EventDtoWithUsername {
   @IsNotEmpty()
   username: string;
 
+  @IsNotEmpty()
+  statut: string;
+
+  @IsNotEmpty()
+  category: string;
+
 }

@@ -22,6 +22,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  //register a user
   @Post('register')
   public async register(
     @Body() createUserDto: UserDto,
@@ -39,12 +40,14 @@ export class AuthController {
     return result;
   }
 
+  //login a user
   @Post('login')
   public async login(@Body() loginUserDto: UserDto): Promise<LoginStatus> {
     Logger.log("Request : /auth/login");
     return await this.authService.login(loginUserDto);
   }
 
+  //?
   @Get('whoami')
   @UseGuards(AuthGuard())
   public async testAuth(@Req() req: any): Promise<JwtPayload> {

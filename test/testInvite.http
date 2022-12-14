@@ -1,0 +1,36 @@
+### invit
+POST http://localhost:4000/invites/invit
+content-type: application/json
+
+{
+    "usernameInviting":"antony",
+    "usernameInvited":"antony",
+    "idEvent":"7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed"
+}
+
+### get all invitations
+GET http://localhost:4000/invites/antony
+
+
+### accept invitation
+
+PUT http://localhost:4000/invites/accept
+content-type: application/json
+
+{
+    "usernameInvited":"antony",
+    "idEvent":"7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed"
+}
+
+### refuse invitation
+PUT http://localhost:4000/invites/refuse
+content-type: application/json
+
+{
+    "usernameInvited":"antony",
+    "idEvent":"7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed"
+}
+
+
+
+
