@@ -33,7 +33,7 @@ export class UsersService {
 
     async create(user: UserDto){
         // on ne peut pas créer 2 users avec le meme nom
-        const res = await this.neo4jService.write('CREATE (user:USER{name: $name, age: $age, mail: $mail, mdp: $mdp})', {name: user.username, age: '22', mail: user.email, mdp: user.password})
+        const res = await this.neo4jService.write('CREATE (user:USER{username: $name, age: $age, mail: $mail, mdp: $mdp})', {name: user.username, age: '22', mail: user.email, mdp: user.password})
 
         return res;
     }

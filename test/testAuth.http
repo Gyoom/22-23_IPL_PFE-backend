@@ -6,7 +6,7 @@ POST http://localhost:4000/auth/login
 content-type: application/json
 
 {
-    "username":"antony",
+    "username":"testazkqeliuopmpe23242",
     "password":"mdp"
 }
 
@@ -15,7 +15,7 @@ POST http://localhost:4000/auth/register
 content-type: application/json
 
 {
-    "username":"tamtom",
+    "username":"testazkqeliuopmpe23242",
     "password":"mdp",
-    "email": "test@test.com"
+    "email": "test12az78@test.com"
 }

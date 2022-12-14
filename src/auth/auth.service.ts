@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { isEmpty } from 'class-validator';
 
 import * as bcrypt from 'bcrypt';
+import { isUndefined } from 'util';
 
 @Injectable()
 export class AuthService {
@@ -24,28 +25,36 @@ export class AuthService {
       message: 'user registered',
     };
 
+    let userByEmail;
+    let userByUsername;
+
     try{
-      const userByUsername = await this.usersService.findByUsername(userDto.username);
-      const userByEmail = await this.usersService.findBymail(userDto.email);
-
-      if (!isEmpty(userByUsername)){
-        status = {
-          success: false,
-          message: 'The username already exists'
-        }
-
-        return status;
-      }
-
-      if (!isEmpty(userByEmail)){
-        status = {
-          success: false,
-          message: 'The email already exists'
-        }
-          return status;
-      }
+      userByUsername = await this.usersService.findByUsername(userDto.username);
     } catch(err){
       // Nothing, it's normal
+    }
+
+    try{
+      userByEmail = await this.usersService.findBymail(userDto.email);
+    } catch(err){
+      // Nothing, it's normal
+    }
+
+    if (userByUsername != undefined){
+      status = {
+        success: false,
+        message: 'The username already exists'
+      }
+
+      return status;
+    }
+
+    if (userByEmail != undefined){
+      status = {
+        success: false,
+        message: 'The email already exists'
+      }
+        return status;
     }
 
     try {
