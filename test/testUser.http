@@ -13,8 +13,13 @@ GET http://localhost:4000/users/mail/antony@gmail.com
 
 
 
+<<<<<<< HEAD
 ### get all friends OK
 GET http://localhost:4000/users/friends/dfg
+=======
+### get all friends
+GET http://localhost:4000/users/friends/tom
+>>>>>>> c4159ddfa8659693e4028670ca7c435f6f7aae77
 ###put new friends OK
 POST http://localhost:4000/users/newfriends
 content-type: application/json

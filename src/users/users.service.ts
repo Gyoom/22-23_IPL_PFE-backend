@@ -21,6 +21,14 @@ export class UsersService {
     }
 
     async createFriends(userFriendDto: UserFriendDto ): Promise<any>{
+        const verif = await this.neo4jService.write( 'MATCH  (u1:USER{username:$name1}), (u2:USER{username:$name2}) RETURN EXISTS( (u1)-[:IS_FRIEND]->(u2) ) AS isFriend',{name1: userFriendDto.usernameReciever, name2: userFriendDto.usernameSender});
+        if(verif.records[0].get('isFriend')){
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'users are alredy friends',
+              }, HttpStatus.BAD_REQUEST, {
+              });
+        }
         const res = await this.neo4jService.write('MATCH(u1:USER{username:$name1}), (u2:USER{username:$name2}) CREATE (u1)-[:IS_FRIEND]->(u2), (u2)-[:IS_FRIEND]->(u1)',
         { name1: userFriendDto.usernameReciever, name2: userFriendDto.usernameSender });
         return;
@@ -36,9 +44,6 @@ export class UsersService {
 
     async create(user: UserDto){
         
-        // check if email or username already existing
-
-
         const res = await this.neo4jService.write('CREATE (user:USER{username: $name, age: $age, mail: $mail, mdp: $mdp})', 
         { name: user.username, age: '22', mail: user.email, mdp: user.password })
 
