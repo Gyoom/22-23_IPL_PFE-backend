@@ -12,7 +12,7 @@ async function bootstrap() {
       'http://localhost:4200',
       'https://frontend-angular-dev.azurewebsites.net',
     ],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT"],
     preflightContinue: false,
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
