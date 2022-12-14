@@ -13,15 +13,15 @@ GET http://localhost:4000/users/mail/antony@gmail.com
 
 
 
-### get all friends
-GET http://localhost:4000/users/friends/to
+### get all friends OK
+GET http://localhost:4000/users/friends/dfg
 ###put new friends OK
 POST http://localhost:4000/users/newfriends
 content-type: application/json
 
 {
-    "usernameSender":"tom",
-    "usernameReciever":"yseut"
+    "usernameSender":"dfg",
+    "usernameReciever":"blabla"
 }
 
 ###REMOVE friends
