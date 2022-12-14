@@ -24,30 +24,32 @@ export class AuthService {
       message: 'user registered',
     };
 
-    try {
-      try{
-        const userByUsername = await this.usersService.findByUsername(userDto.username);
-        const userByEmail = await this.usersService.findBymail(userDto.email);
+    try{
+      const userByUsername = await this.usersService.findByUsername(userDto.username);
+      const userByEmail = await this.usersService.findBymail(userDto.email);
 
-        if (!isEmpty(userByUsername)){
-          status = {
-            success: false,
-            message: 'The username already exists'
-          }
-  
-          return status;
+      if (!isEmpty(userByUsername)){
+        status = {
+          success: false,
+          message: 'The username already exists'
         }
-  
-        if (!isEmpty(userByEmail)){
-          status = {
-            success: false,
-            message: 'The email already exists'
-          }
-            return status;
-        }
-      } catch(err){
-        // Nothing, it's normal
+
+        return status;
       }
+
+      if (!isEmpty(userByEmail)){
+        status = {
+          success: false,
+          message: 'The email already exists'
+        }
+          return status;
+      }
+    } catch(err){
+      // Nothing, it's normal
+    }
+
+    try {
+      
       
       const salt = await bcrypt.genSalt();
       const hash = await bcrypt.hash(userDto.password, salt);
