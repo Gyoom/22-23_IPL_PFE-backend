@@ -39,8 +39,7 @@ content-type: application/json
     
 
 ### get all events participating
-GET  http://localhost:4000/events/register/yseut
-
+GET  http://localhost:4000/events/register/juliette
 
 ### create event
 POST http://localhost:4000/events/create

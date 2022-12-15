@@ -45,7 +45,7 @@ export class UsersController {
         return await this.usersService.getAllFriends(param.username);
     }
 
-    //get all the users that arent the friend
+    //get all non friends of a user
     @Get('nonfriends/:username')
     public async getAllNonFriends(@Param() param): Promise<any> {
         Logger.log("Requests : /users/nonfriends" + param.username);
@@ -59,7 +59,7 @@ export class UsersController {
         return await this.usersService.createFriends(userFriendDto);
     }
 
-    //delte a friend
+    //delete a friend
     @Delete('/removeFriends')
     public async deleteFriend(@Body() userFriendDto: UserFriendDto  ){
         Logger.log("request : /removeFriends" + userFriendDto);
