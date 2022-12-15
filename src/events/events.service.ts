@@ -19,10 +19,8 @@ export class EventsService {
     }
 
     async findAll(): Promise<any> {
-
-        //seulement pour event public ou invité
         
-        const res = await this.neo4jService.read('MATCH (u:EVENT) RETURN u');
+        const res = await this.neo4jService.read('MATCH (u:EVENT:PUBLIC) RETURN u');
         
         Logger.log("length records :" + res.records.length)
         res.records.forEach( u => Logger.log("one event from all :" + u))
@@ -113,14 +111,23 @@ export class EventsService {
         
     }
 
-    async deleteEvent(event : EventDto) {
+    async deleteEvent(eventWithUsername : EventDtoWithUsername) {
 
         //check if organiser
+        const check1 = await this.neo4jService.write(
+            'MATCH (b:USER {username: $usernameInvited})<-[:ORGANIZED_BY]-(a:EVENT {id:$id})  RETURN a',
+            {usernameInvited: eventWithUsername.username, id: eventWithUsername.id}
+        )
+        if(!check1.records.length){
+            Logger.log("check1 failed : is not the organisator");
+            return undefined;
+        }
+
 
         //check que l'event existe
         const res = await this.neo4jService.write(
             'MATCH (a:EVENT) WHERE a.id = $id RETURN a AS event',
-            {id: event.id}
+            {id: eventWithUsername.id}
         )
         if(!res.records.length){
             Logger.log("event does not exist");
@@ -129,10 +136,10 @@ export class EventsService {
 
 
 
-        Logger.log("delete de l'event avec l'id : "+ event.id);
+        Logger.log("delete de l'event avec l'id : "+ eventWithUsername.id);
         const res2 = await this.neo4jService.write(
             'MATCH (a:EVENT) WHERE a.id = $id DETACH DELETE a RETURN a AS event',
-            {id: event.id}
+            {id: eventWithUsername.id}
         )
         return res.records[0].get('event');
 
@@ -191,6 +198,16 @@ export class EventsService {
             return undefined;
         }
 
+        //check if organiser
+        const check2 = await this.neo4jService.write(
+            'MATCH (b:USER {username: $usernameInvited})<-[:ORGANIZED_BY]-(a:EVENT {id:$id})  RETURN a',
+            {usernameInvited: eventDtoWithUsername.username, id: eventDtoWithUsername.id}
+        )
+        if(check2.records.length){
+            Logger.log("check2 failed : is the organisator");
+            return undefined;
+        }
+
         //check que participe pas déjà
 
         const check3 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:PARTICIPATE]-(b:USER {username: $usernameInvited})  RETURN a',
@@ -201,7 +218,7 @@ export class EventsService {
             return undefined;
         }   
 
-        //check is organiser
+       
 
         //check if event is private
         const check4 = await this.neo4jService.read('MATCH (a:EVENT:PRIVATE) WHERE a.id=$idEvent RETURN a.name',
