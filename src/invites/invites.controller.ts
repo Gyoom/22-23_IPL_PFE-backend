@@ -9,6 +9,8 @@ export class InvitesController {
     constructor(private readonly invitesService: InvitesService){}    
 
     //invit a friend
+    //TO DO
+    //check invited is not the organizer
     @Post('/invit')
     public async inviter(@Body() invitDto: InvitDto) {
         Logger.log("Request : /invites/inviter" + invitDto);

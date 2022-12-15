@@ -59,6 +59,8 @@ export class EventsController {
     }
 
     //get all events where user is participating
+    //TO DO 
+    //have to select the organizer aswell
     @Get('/register/:username')
     public async getAllEventParticipating(@Param () param){
         Logger.log("Request : /events/register/"+ param.username);
@@ -80,7 +82,5 @@ export class EventsController {
         return await this.eventsService.getAllEventByCategory(param.category);
     }*/
 
-    
 }
-
 

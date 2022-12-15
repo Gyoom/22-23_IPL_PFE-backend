@@ -60,6 +60,8 @@ export class InvitesService {
             Logger.log("check 5 failed, already participating to "+invitDto.idEvent);
             return undefined;
         }     
+
+        //check user not the organizer
         
 
         //check user invited is a friend

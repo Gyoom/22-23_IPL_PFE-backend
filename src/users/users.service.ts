@@ -15,8 +15,14 @@ export class UsersService {
     }
 
    async getAllFriends(username: string): Promise<any>{
-    const res = await this.neo4jService.read('MATCH(n:USER)-[:IS_FRIEND]->(n2:USER{username:$name}) RETURN DISTINCT n.username AS username',{name: username });
+    const res = await this.neo4jService.read('MATCH(n:USER)-[:IS_FRIEND]->(n2:USER{username:$name}) RETURN DISTINCT n.username AS username, n.nom AS name, n.prenom AS firstname',{name: username });
     
+    return res.records;
+    }
+
+    async getAllNonFriends(username: string): Promise<any>{
+    const res = await this.neo4jService.read('MATCH(n2:USER{username:$name}), (n:USER) WHERE NOT (n)-[:IS_FRIEND]->(n2) AND n2 <> n  RETURN DISTINCT n.username AS username, n.nom AS name, n.prenom AS firstname',{name: username });
+        
     return res.records;
     }
 
@@ -44,8 +50,8 @@ export class UsersService {
 
     async create(user: UserDto){
         
-        const res = await this.neo4jService.write('CREATE (user:USER{username: $name, age: $age, mail: $mail, mdp: $mdp})', 
-        { name: user.username, age: '22', mail: user.email, mdp: user.password })
+        const res = await this.neo4jService.write('CREATE (user:USER{username: $username, mail: $mail, mdp: $mdp, nom:$nom, prenom:$prenom})', 
+        { username: user.username, mail: user.email, mdp: user.password, nom: user.name, prenom: user.firstname })
 
         return res;
     }
