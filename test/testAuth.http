@@ -15,7 +15,11 @@ POST http://localhost:4000/auth/register
 content-type: application/json
 
 {
-    "username":"testazkqeliuopmpe232",
-    "password":"mdp",
-    "email": "test12az78@test.co"
+    "username":"dadyLoveSatan",
+    "name":"boaty",
+    "firstname":"Mcboatface",
+    "email": "dadyLoveSatan@test.com",
+    "password":"password
 }
+    
+
