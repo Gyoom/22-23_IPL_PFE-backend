@@ -10,8 +10,6 @@ export class EventsService {
     ) {}
     
     async findById(@Param('id') idFromParam: string): Promise<Event>{
-
-        //seulement pour public ou invité
         
         const res = await this.neo4jService.read('MATCH (u:EVENT{id:$id}) RETURN u AS event', {id:idFromParam});
         Logger.log("record" + res.records[0].get('event'));
@@ -146,41 +144,10 @@ export class EventsService {
             
     }
 
-    async updateEvent(event : EventDto) {
-
-        //check if organiser
-
-        //check if event exists
-        const previousEvent = await this.neo4jService.read('MATCH (n:EVENT {id: $id}) RETURN n AS event',
-        {id: event.id})
-
-        if(!previousEvent.records.length){
-            Logger.log("event does not exists");
-            return undefined;
-        }
-
-        //check dates
-        //TO DO
-
-        //update user
-        //check if statut changed
-        //TO DO
-
-        //category object
-        //check if category changed
-        //if category different check it exists
-
-        Logger.log("update de l'event avec l'id : "+ event.id);
-        const res = await this.neo4jService.write(
-        'MATCH (a:EVENT) WHERE a.id=$id SET a={name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description, id: $id} RETURN a AS event',
-        {id: event.id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description}
-        )
-        return res.records[0].get('event');
-    }
-
+    
     async getAllEventParticipating(@Param('username') username: string){
 
-        const res = await this.neo4jService.read('MATCH (a:EVENT)<-[:PARTICIPATE]-(b:USER {username: $username})  RETURN a',
+        const res = await this.neo4jService.read('MATCH (a:EVENT)<-[:PARTICIPATE]-(b:USER {username: $username})  RETURN a as event UNION ALL MATCH (c:USER{username: $username})<-[:ORGANIZED_BY]-(d:EVENT) RETURN d as event',
         {username: username}
         )
         return res;
@@ -229,16 +196,18 @@ export class EventsService {
             Logger.log("Event is private");
 
             //check if invited
-            const check5 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:INVITED_TO]-(b:USER {username: $usernameInvited})  RETURN a',
-            {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id});
+            const check5 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:INVITED_TO {response: $response}]-(b:USER {username: $usernameInvited})  RETURN a',
+            {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id, response: "waiting"});
         
-            if(!check5.records.length){
-                Logger.log("check 5 , there is no invitation to event : "+eventDtoWithUsername.id + " not possible to participate");
+            if(check5.records.length){
+
+                Logger.log("check 5 , there is an invitation to : "+eventDtoWithUsername.id);
                 const res = await this.neo4jService.write('MATCH (a:EVENT)<-[c:INVITED_TO]-(b:USER {username: $usernameInvited})  SET c.response = "accepted" RETURN c',
                 {usernameInvited: eventDtoWithUsername.username}
                 )
-
-                return undefined;
+            }else{
+                Logger.log("check 5 ,no invitation for the private event");
+                return undefined
             } 
 
             //create relation
@@ -312,7 +281,7 @@ export class EventsService {
 
         
     }
-
+    
     /*async getAllEventByCategory(@Param('category') category: string){
         const res = await this.neo4jService.read('MATCH (a:CATEGORY {name: $category})<-[:HAS_FOR_CATEGORY]-(b:EVENT)  RETURN a',
         {category: category}
@@ -321,7 +290,40 @@ export class EventsService {
     }*/
 
 
-   
+   //update event
+    /*
+    async updateEvent(event : EventDto) {
+
+        //check if organiser
+
+        //check if event exists
+        const previousEvent = await this.neo4jService.read('MATCH (n:EVENT {id: $id}) RETURN n AS event',
+        {id: event.id})
+
+        if(!previousEvent.records.length){
+            Logger.log("event does not exists");
+            return undefined;
+        }
+
+        //check dates
+        //TO DO
+
+        //update user
+        //check if statut changed
+        //TO DO
+
+        //category object
+        //check if category changed
+        //if category different check it exists
+
+        Logger.log("update de l'event avec l'id : "+ event.id);
+        const res = await this.neo4jService.write(
+        'MATCH (a:EVENT) WHERE a.id=$id SET a={name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description, id: $id} RETURN a AS event',
+        {id: event.id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description}
+        )
+        return res.records[0].get('event');
+    }
+    */
 
 }
 
