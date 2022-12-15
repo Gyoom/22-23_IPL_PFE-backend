@@ -16,13 +16,12 @@ export class EventsController {
         return await this.eventsService.findById(param.id);
     }
 
-    //get all event if public or invited
+    //get all public event
     @Get('/')
     public async getAll(): Promise<any> {
         Logger.log("Request : /events/" );
         return await this.eventsService.findAll();
     }
-
 
     //create event
     @Post('create')
@@ -34,10 +33,11 @@ export class EventsController {
 
 
     //delete event
-    @Delete('/delete')
-    public async deleteEvent(@Body() eventDto : EventDto) {
-        Logger.log("Request delete : / " + eventDto);
-        return await this.eventsService.deleteEvent(eventDto);
+    @Delete('/:username/delete')
+    public async deleteEvent(@Body() eventDtoWithUsername : EventDtoWithUsername, @Param() param) {
+        eventDtoWithUsername.username = param.username
+        Logger.log("Request delete : / " + eventDtoWithUsername);
+        return await this.eventsService.deleteEvent(eventDtoWithUsername);
     }
 
 
