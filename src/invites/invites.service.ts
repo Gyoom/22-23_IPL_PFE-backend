@@ -128,8 +128,8 @@ export class InvitesService {
 
     }
 
-   
-    async refuser(invitDto: InvitDto) {
+    /*
+    async refused(invitDto: InvitDto) {
        
         //check que l'invitation existe
 
@@ -141,17 +141,6 @@ export class InvitesService {
             return undefined;
         }   
 
-        //check que participe pas déjà
-
-        const check2 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:PARTICIPATE]-(b:USER {username: $usernameInvited})  RETURN a',
-        {usernameInvited: invitDto.usernameInvited, idEvent: invitDto.idEvent});
-        
-        if(check2.records.length){
-            Logger.log("check 2 failed, already participating to "+invitDto.idEvent);
-            return undefined;
-        }     
-
-        //??check que not already accepted?
 
         //update la réponse de l'invitation
 
@@ -164,20 +153,32 @@ export class InvitesService {
             return undefined;
         }
     }
-
+    */
     
     async getAllInvitedTo(@Param('username') username: string) {
 
         Logger.log("username " + username);
        
-        const res = await this.neo4jService.read('MATCH (a:EVENT)<-[:INVITED_TO]-(b:USER {username: $usernameInvited})  RETURN a',
-        {usernameInvited: username});
+        const res = await this.neo4jService.read('MATCH (a:EVENT)<-[:INVITED_TO{response: $response}]-(b:USER {username: $usernameInvited})  RETURN a',
+        {response: "waiting", usernameInvited: username});
         
-     
+        if(!res.records.length){
+            return undefined;
+        }
 
         return res;
         
     }    
+
+    async getAllAccepted(@Param('username') username: string) {
+
+        Logger.log("username " + username);
+       
+        const res1 = await this.neo4jService.read('MATCH (a:EVENT)<-[:INVITED_TO{response: "accepted"}]-(b:USER {username: "romeo"})  RETURN a as event UNION ALL MATCH (d:USER {username: "romeo"})<-[:ORGANIZED_BY]-(c:EVENT)  RETURN c as event',
+        {response: "accepted", usernameInvited: username});
+        return res1
+       
+    } 
     
     
 }

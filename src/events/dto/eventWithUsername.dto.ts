@@ -16,6 +16,10 @@ export class EventDtoWithUsername {
   @Type( () => Date)
   ending_date: Date;
 
+  @IsNotEmpty()  
+  @Type( () => Date)
+  creation_date: Date;
+
   @IsNotEmpty()
   description: string;
 

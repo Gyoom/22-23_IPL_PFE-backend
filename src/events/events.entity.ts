@@ -19,6 +19,10 @@ export class EventEntity {
     getEndingDate(): Date {
         return (<Record<string, any>> this.node.properties).ending_date
     }
+e
+    getCreationDate(): Date {
+        return (<Record<string, any>> this.node.properties).creation_date
+    }
   
     getDescription(): string {
         return (<Record<string,any>> this.node.properties).description
