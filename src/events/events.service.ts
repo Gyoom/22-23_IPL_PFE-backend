@@ -28,13 +28,6 @@ export class EventsService {
 
     async createEvent(event: EventDtoWithUsername): Promise<Event>{
 
-        //need transaction 
-        //TO DO        
-
-
-        //vérifier date
-        //TO DO
-
         //object category
         /*//check if category exists
         const check1 = await this.neo4jService.read('MATCH (u:CATEGORY {name: $name}) RETURN u AS category',
