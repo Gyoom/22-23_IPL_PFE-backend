@@ -65,6 +65,14 @@ export class EventsController {
         return await this.eventsService.getAllEventParticipating(param.username);
     }
 
+    @Put('/:id/unparticipate')
+    public async unparticipate(@Body() eventDtoWithUsername: EventDtoWithUsername, @Param() param){
+        eventDtoWithUsername.id = param.id
+        Logger.log("Request : /events/"+param.id+"/participate");
+        return await this.eventsService.unparticipate(eventDtoWithUsername);
+        
+    }
+
     /*//get all event by category
     @Get('/categories/:category')
     public async getAllEventByCategory(@Param () param){
@@ -72,6 +80,7 @@ export class EventsController {
         return await this.eventsService.getAllEventByCategory(param.category);
     }*/
 
+    
 }
 
 

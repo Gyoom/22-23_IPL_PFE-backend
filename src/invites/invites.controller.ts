@@ -24,19 +24,32 @@ export class InvitesController {
 
     }
 
+    /*
     //refuse an invitation
-    @Put('/refuse')
+    @Put('/refused')
     public async refuser(@Body() invitDto: InvitDto) {
         Logger.log("Request : /invites/refuser" + invitDto);
-        return await this.invitesService.refuser(invitDto);
+        return await this.invitesService.refused(invitDto);
 
-    }
+    }*/
    
     //get all invitations for an user
-    @Get('/:username')
+    @Get('/:username/invited')
     public async getAllInvitedTo(@Param () param) {
         Logger.log("Request : /invites/" + param.username);
         return await this.invitesService.getAllInvitedTo(param.username);
+
+
+
+    }
+
+    //get all invitations for an user
+    @Get('/:username/accepted')
+    public async getAllAccepted(@Param () param) {
+        Logger.log("Request : /invites/" + param.username + "/accepted");
+        return await this.invitesService.getAllAccepted(param.username);
+
+
 
     }
 

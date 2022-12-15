@@ -69,6 +69,12 @@ GET http://localhost:4000/events/categories/Festival
 
 
 
+### unparticipate to an event
+PUT http://localhost:4000/events/9d09cdbb-3d13-4c57-b2ca-8d43d9483a3c/unparticipate
+content-type: application/json
 
-            
+{    
+    "username":"juliette" 
+}
+
     
