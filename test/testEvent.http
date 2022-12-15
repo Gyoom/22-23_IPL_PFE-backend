@@ -42,8 +42,7 @@ content-type: application/json
     
 
 ### get all events participating
-GET  http://localhost:4000/events/register/yseut
-
+GET  http://localhost:4000/events/register/juliette
 
 ### create event
 POST http://localhost:4000/events/create
@@ -61,11 +60,11 @@ content-type: application/json
 }
 
 ### participate to an event
-PUT http://localhost:4000/events/7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed/participate
+PUT http://localhost:4000/events/9d09cdbb-3d13-4c57-b2ca-8d43d9483a3c/participate
 content-type: application/json
 
 {    
-    "username":"antony" 
+    "username":"yseut" 
 }
 
 

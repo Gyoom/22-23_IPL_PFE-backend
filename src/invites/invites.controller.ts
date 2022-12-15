@@ -8,8 +8,6 @@ export class InvitesController {
     constructor(private readonly invitesService: InvitesService){}    
 
     //invit a friend
-    //TO DO
-    //check invited is not the organizer
     @Post('/invit')
     public async inviter(@Body() invitDto: InvitDto) {
         Logger.log("Request : /invites/inviter" + invitDto);
@@ -23,16 +21,7 @@ export class InvitesController {
         Logger.log("Request : /invites/accepter" + invitDto);
         return await this.invitesService.accepter(invitDto);
 
-    }
-
-    /*
-    //refuse an invitation
-    @Put('/refused')
-    public async refuser(@Body() invitDto: InvitDto) {
-        Logger.log("Request : /invites/refuser" + invitDto);
-        return await this.invitesService.refused(invitDto);
-
-    }*/
+    }   
    
     //get all invitations for an user
     @Get('/:username/invited')
@@ -49,10 +38,17 @@ export class InvitesController {
     public async getAllAccepted(@Param () param) {
         Logger.log("Request : /invites/" + param.username + "/accepted");
         return await this.invitesService.getAllAccepted(param.username);
-
-
-
     }
+
+
+     /*
+    //refuse an invitation
+    @Put('/refused')
+    public async refuser(@Body() invitDto: InvitDto) {
+        Logger.log("Request : /invites/refuser" + invitDto);
+        return await this.invitesService.refused(invitDto);
+
+    }*/
 
     
 }

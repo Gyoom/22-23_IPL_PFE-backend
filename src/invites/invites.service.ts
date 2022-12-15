@@ -21,7 +21,7 @@ export class InvitesService {
         }
 
 
-        // ==> useless? check if user inviting exists
+        //check if user inviting exists
         const check2 = await this.neo4jService.read('MATCH (a:USER) WHERE a.username = $username RETURN a',
         {username: invitDto.usernameInviting}); 
 
@@ -140,32 +140,7 @@ export class InvitesService {
 
     }
 
-    /*
-    async refused(invitDto: InvitDto) {
-       
-        //check que l'invitation existe
-
-        const check1 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:INVITED_TO]-(b:USER {username: $usernameInvited})  RETURN a',
-        {usernameInvited: invitDto.usernameInvited, idEvent: invitDto.idEvent});
-        
-        if(!check1.records.length){
-            Logger.log("check 1 failed, no invitation "+invitDto.idEvent);
-            return undefined;
-        }   
-
-
-        //update la réponse de l'invitation
-
-        const res = await this.neo4jService.write('MATCH (a:EVENT)<-[c:INVITED_TO]-(b:USER {username: $usernameInvited})  SET c.response = "refused" RETURN c',
-        {usernameInvited: invitDto.usernameInvited}
-        )
-
-        if(!res.records.length){
-            Logger.log("change response in invitation failed");
-            return undefined;
-        }
-    }
-    */
+    
     
     async getAllInvitedTo(@Param('username') username: string) {
 
@@ -192,6 +167,33 @@ export class InvitesService {
        
     } 
     
+
+    /*
+    async refused(invitDto: InvitDto) {
+       
+        //check que l'invitation existe
+
+        const check1 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:INVITED_TO]-(b:USER {username: $usernameInvited})  RETURN a',
+        {usernameInvited: invitDto.usernameInvited, idEvent: invitDto.idEvent});
+        
+        if(!check1.records.length){
+            Logger.log("check 1 failed, no invitation "+invitDto.idEvent);
+            return undefined;
+        }   
+
+
+        //update la réponse de l'invitation
+
+        const res = await this.neo4jService.write('MATCH (a:EVENT)<-[c:INVITED_TO]-(b:USER {username: $usernameInvited})  SET c.response = "refused" RETURN c',
+        {usernameInvited: invitDto.usernameInvited}
+        )
+
+        if(!res.records.length){
+            Logger.log("change response in invitation failed");
+            return undefined;
+        }
+    }
+    */
     
 }
 

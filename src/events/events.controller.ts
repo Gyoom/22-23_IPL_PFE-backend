@@ -40,15 +40,7 @@ export class EventsController {
         return await this.eventsService.deleteEvent(eventDtoWithUsername);
     }
 
-
-    //update event
-    @Put('/:id/update')
-    public async updateEvent(@Body() eventDto : EventDto, @Param() param) {
-        eventDto.id = param.id
-        Logger.log("Request : /events/update" + eventDto);
-        return await this.eventsService.updateEvent(eventDto);
-    }
-
+ 
 
     //participate to a public or invited private event
     @Put('/:id/participate')
@@ -66,7 +58,6 @@ export class EventsController {
         Logger.log("Request : /events/register/"+ param.username);
         return await this.eventsService.getAllEventParticipating(param.username);
     }
-
     @Put('/:id/unparticipate')
     public async unparticipate(@Body() eventDtoWithUsername: EventDtoWithUsername, @Param() param){
         eventDtoWithUsername.id = param.id
@@ -75,12 +66,24 @@ export class EventsController {
         
     }
 
+
+
     /*//get all event by category
     @Get('/categories/:category')
     public async getAllEventByCategory(@Param () param){
         Logger.log("Request : /events/categories/"+ param.category);
         return await this.eventsService.getAllEventByCategory(param.category);
     }*/
+
+       /*
+    //update event
+    @Put('/:id/update')
+    public async updateEvent(@Body() eventDto : EventDto, @Param() param) {
+        eventDto.id = param.id
+        Logger.log("Request : /events/update" + eventDto);
+        return await this.eventsService.updateEvent(eventDto);
+    }
+    */
 
 }
 

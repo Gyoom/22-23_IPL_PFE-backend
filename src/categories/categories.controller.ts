@@ -15,12 +15,14 @@ export class CategoriesController {
         return await this.categoriesService.findByName(param.name);
     }
 
+    //get all category
     @Get('/')
     public async getAll(){
         Logger.log("Request: /categories/");
         return await this.categoriesService.findAll();
     }
 
+    //create a category
     @Post('/createCategory')
     public async createCateogry(@Body () categoryDto: CategoryDto){
         Logger.log("Request : /categories/createCategory/" );
