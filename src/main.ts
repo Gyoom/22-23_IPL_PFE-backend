@@ -11,6 +11,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:4200',
       'https://frontend-angular-dev.azurewebsites.net',
+      'https://frontend-angular-prod.azurewebsites.net',
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     preflightContinue: false,
