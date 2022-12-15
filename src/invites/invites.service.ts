@@ -62,18 +62,30 @@ export class InvitesService {
         }     
 
         //check user not the organizer
+        const check6 = await this.neo4jService.read('MATCH (b:USER {username: $usernameInvited})<-[:ORGANIZE_BY]-(a:EVENT {id:$idEvent})  RETURN a',
+        {usernameInvited: invitDto.usernameInvited, idEvent: invitDto.idEvent});
         
+        if(check6.records.length){
+            Logger.log("check 6 failed, already organisator to "+invitDto.idEvent);
+            return undefined;
+        }  
 
         //check user invited is a friend
+        const check7 = await this.neo4jService.read('MATCH (b:USER {username: $usernameInvited})<-[:IS_FRIEND]-(a:USER {username: $usernameInviting})  RETURN a',
+        {usernameInvited: invitDto.usernameInvited, idEvent: invitDto.idEvent, usernameInviting: invitDto.usernameInviting});
+        
+        if(check7.records.length){
+            Logger.log("check 7 failed, not a friend ");
+            return undefined;
+        }  
 
-        //const creationDate = new Date(Date.now());
+
         
         //creating invitation
         const res = await this.neo4jService.write(
             ' MATCH (a:USER), (b:EVENT) WHERE a.username = $usernameInvited AND b.id = $idEvent CREATE (a)-[:INVITED_TO{usernameInviting: $usernameInviting, response: $response}]->(b) RETURN a',
             {usernameInviting: invitDto.usernameInviting, usernameInvited: invitDto.usernameInvited, idEvent: invitDto.idEvent, response: "waiting"}
                 )
-        Logger.log("date created : "+Date.now());
         return res;
     }
 

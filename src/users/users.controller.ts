@@ -24,6 +24,13 @@ export class UsersController {
     }
 
 
+     //get all event organized by a user
+     @Get(':username/organized/')
+     public async getAllOrganized(@Param() param): Promise<any> {
+         Logger.log("Request : /users/"+param.username+"organized/" );
+         return await this.usersService.getAllOrganized(param.username);
+     }
+
     //get a user by his email
     @Get('mail/:mail')
     public async getOneByMail(@Param() param): Promise<any> {

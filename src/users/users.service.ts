@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Param } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { UserFriendDto } from './dto/userFriends.dto';
@@ -14,17 +14,24 @@ export class UsersService {
         return res.records;
     }
 
-   async getAllFriends(username: string): Promise<any>{
-    const res = await this.neo4jService.read('MATCH(n:USER)-[:IS_FRIEND]->(n2:USER{username:$name}) RETURN DISTINCT n.username AS username, n.nom AS name, n.prenom AS firstname',{name: username });
+    async getAllFriends(username: string): Promise<any>{
+        const res = await this.neo4jService.read('MATCH(n:USER)-[:IS_FRIEND]->(n2:USER{username:$name}) RETURN DISTINCT n.username AS username, n.nom AS name, n.prenom AS firstname',{name: username });
     
-    return res.records;
+        return res.records;
     }
 
     async getAllNonFriends(username: string): Promise<any>{
-    const res = await this.neo4jService.read('MATCH(n2:USER{username:$name}), (n:USER) WHERE NOT (n)-[:IS_FRIEND]->(n2) AND n2 <> n  RETURN DISTINCT n.username AS username, n.nom AS name, n.prenom AS firstname',{name: username });
+        const res = await this.neo4jService.read('MATCH(n2:USER{username:$name}), (n:USER) WHERE NOT (n)-[:IS_FRIEND]->(n2) AND n2 <> n  RETURN DISTINCT n.username AS username, n.nom AS name, n.prenom AS firstname',{name: username });
         
-    return res.records;
+        return res.records;
     }
+
+    async getAllOrganized(@Param('username') username: string): Promise<any>{
+        const res = await this.neo4jService.read('MATCH (b:USER {username: $username})<-[:ORGANIZED_BY]-(a:EVENT)  RETURN a',
+        {username: username});
+        return res.records;
+    }
+
 
     async createFriends(userFriendDto: UserFriendDto ): Promise<any>{
         const verif = await this.neo4jService.write( 'MATCH  (u1:USER{username:$name1}), (u2:USER{username:$name2}) RETURN EXISTS( (u1)-[:IS_FRIEND]->(u2) ) AS isFriend',{name1: userFriendDto.usernameReciever, name2: userFriendDto.usernameSender});
