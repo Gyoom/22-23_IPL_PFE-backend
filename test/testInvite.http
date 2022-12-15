@@ -3,9 +3,9 @@ POST http://localhost:4000/invites/invit
 content-type: application/json
 
 {
-    "usernameInviting":"antony",
-    "usernameInvited":"antony",
-    "idEvent":"4bf0f6e7-bfa4-41ef-bfc1-7eef47d4d857"
+    "usernameInviting":"romeo",
+    "usernameInvited":"tom",
+    "idEvent":"0de0a518-b45d-430d-b11d-4ed91ef4cf08"
 }
 
 ### get all invitations where invited (response = waiting)

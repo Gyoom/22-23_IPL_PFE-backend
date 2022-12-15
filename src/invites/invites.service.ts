@@ -74,7 +74,7 @@ export class InvitesService {
         const check7 = await this.neo4jService.read('MATCH (b:USER {username: $usernameInvited})<-[:IS_FRIEND]-(a:USER {username: $usernameInviting})  RETURN a',
         {usernameInvited: invitDto.usernameInvited, idEvent: invitDto.idEvent, usernameInviting: invitDto.usernameInviting});
         
-        if(check7.records.length){
+        if(!check7.records.length){
             Logger.log("check 7 failed, not a friend ");
             return undefined;
         }  
