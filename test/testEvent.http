@@ -52,8 +52,7 @@ content-type: application/json
     "ending_date":"25-12-2022",
     "description":"description",
     "username":"antony",
-    "statut":"private",
-    "category":"Birthday"
+    "statut":"private"
 
 }
 
