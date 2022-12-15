@@ -50,9 +50,7 @@ export class EventsController {
         return await this.eventsService.participate(eventDtoWithUsername);
     }
 
-    //get all events where user is participating
-    //TO DO 
-    //have to select the organizer aswell
+    //get all events where user is participating and is organizing
     @Get('/register/:username')
     public async getAllEventParticipating(@Param () param){
         Logger.log("Request : /events/register/"+ param.username);

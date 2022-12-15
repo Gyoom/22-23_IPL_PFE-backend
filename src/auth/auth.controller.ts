@@ -47,11 +47,4 @@ export class AuthController {
     return await this.authService.login(loginUserDto);
   }
 
-  //?
-  @Get('whoami')
-  @UseGuards(AuthGuard())
-  public async testAuth(@Req() req: any): Promise<JwtPayload> {
-    Logger.log("Request : /auth/whoami");
-    return req.user;
-  }
 }
