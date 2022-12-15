@@ -5,11 +5,14 @@ content-type: application/json
 {
     "usernameInviting":"antony",
     "usernameInvited":"antony",
-    "idEvent":"7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed"
+    "idEvent":"4bf0f6e7-bfa4-41ef-bfc1-7eef47d4d857"
 }
 
-### get all invitations
-GET http://localhost:4000/invites/antony
+### get all invitations where invited (response = waiting)
+GET http://localhost:4000/invites/romeo/invited
+
+### get all invitations where participating and organised (response = accepted)
+GET http://localhost:4000/invites/romeo/accepted
 
 
 ### accept invitation
@@ -22,13 +25,15 @@ content-type: application/json
     "idEvent":"7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed"
 }
 
-### refuse invitation
-PUT http://localhost:4000/invites/refuse
+
+
+### refused invitation
+PUT http://localhost:4000/invites/refused
 content-type: application/json
 
 {
-    "usernameInvited":"antony",
-    "idEvent":"7fe2a3f8-f9c4-417e-9836-b7134c4ee3ed"
+    "usernameInvited":"juliette",
+    "idEvent":"9d09cdbb-3d13-4c57-b2ca-8d43d9483a3c"
 }
 
 

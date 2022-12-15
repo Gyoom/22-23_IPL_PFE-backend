@@ -50,6 +50,7 @@ content-type: application/json
     "name":"Birthday party",
     "starting_date":"15-12-2022",
     "ending_date":"25-12-2022",
+    "creation_date":"15-12-2022",
     "description":"description",
     "username":"antony",
     "statut":"private"
@@ -69,6 +70,12 @@ GET http://localhost:4000/events/categories/Festival
 
 
 
+### unparticipate to an event
+PUT http://localhost:4000/events/9d09cdbb-3d13-4c57-b2ca-8d43d9483a3c/unparticipate
+content-type: application/json
 
-            
+{    
+    "username":"juliette" 
+}
+
     

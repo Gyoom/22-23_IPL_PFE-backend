@@ -2,11 +2,7 @@ import { Injectable, Logger, Param } from '@nestjs/common';
 import { EventDto } from './dto/event.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { EventDtoWithUsername } from './dto/eventWithUsername.dto';
-import { identity } from 'rxjs';
 import { Neo4jService } from 'nest-neo4j/dist';
-import { isRetriableError } from 'neo4j-driver';
-import e from 'express';
-
 @Injectable()
 export class EventsService {
     constructor(
@@ -43,6 +39,7 @@ export class EventsService {
         //vérifier date
         //TO DO
 
+        //object category
         /*//check if category exists
         const check1 = await this.neo4jService.read('MATCH (u:CATEGORY {name: $name}) RETURN u AS category',
         {name: event.category});
@@ -53,6 +50,16 @@ export class EventsService {
 
         }*/
 
+        //check event not with same name
+        const check1 = await this.neo4jService.read('MATCH (n:EVENT {name: $name}) RETURN n AS event',
+        {name: event.name})
+
+        if(check1.records.length){
+            Logger.log("check 1, event already exists");
+            return undefined;
+        }
+
+
         const id = uuidv4();
         var res;
 
@@ -60,14 +67,14 @@ export class EventsService {
         if(event.statut == "public") {
             Logger.log("create public event")
              res = await this.neo4jService.write(
-                'CREATE (event:EVENT:PUBLIC {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}) RETURN event',
-                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description});       
+                'CREATE (event:EVENT:PUBLIC {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, creation_date: $creation_date, description: $description}) RETURN event',
+                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, creation_date: event.creation_date, description: event.description});       
         }
         if(event.statut == "private") {
             Logger.log("create private event")
             res = await this.neo4jService.write(
-                'CREATE (event:EVENT:PRIVATE {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}) RETURN event',
-                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description});       
+                'CREATE (event:EVENT:PRIVATE {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, creation_date: $creation_date, description: $description}) RETURN event',
+                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, creation_date: event.creation_date, description: event.description});       
         }
         
         
@@ -89,6 +96,7 @@ export class EventsService {
                 return undefined;
             }
 
+            //object category
             /*Logger.log("creation of relation HAS_FOR_CATEGORY");
             //creation of relation "HAS_FOR_CATEGORY"
             const res3 = await this.neo4jService.write('MATCH (a:EVENT), (b:CATEGORY) WHERE a.id = $id AND b.name = $category CREATE (a)-[:HAS_FOR_CATEGORY]->(b)',
@@ -106,6 +114,8 @@ export class EventsService {
     }
 
     async deleteEvent(event : EventDto) {
+
+        //check if organiser
 
         //check que l'event existe
         const res = await this.neo4jService.write(
@@ -131,6 +141,8 @@ export class EventsService {
 
     async updateEvent(event : EventDto) {
 
+        //check if organiser
+
         //check if event exists
         const previousEvent = await this.neo4jService.read('MATCH (n:EVENT {id: $id}) RETURN n AS event',
         {id: event.id})
@@ -143,9 +155,11 @@ export class EventsService {
         //check dates
         //TO DO
 
+        //update user
         //check if statut changed
         //TO DO
 
+        //category object
         //check if category changed
         //if category different check it exists
 
@@ -177,15 +191,6 @@ export class EventsService {
             return undefined;
         }
 
-
-        const check2 = await this.neo4jService.read('MATCH (a:EVENT) WHERE a.id = $idEvent RETURN a',
-        {idEvent: eventDtoWithUsername.id});
-
-        if(!check2.records.length){
-            Logger.log("check 2 failed, event does not exist");
-            return undefined;
-        }
-
         //check que participe pas déjà
 
         const check3 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:PARTICIPATE]-(b:USER {username: $usernameInvited})  RETURN a',
@@ -195,6 +200,8 @@ export class EventsService {
             Logger.log("check 3 failed, already participating to "+eventDtoWithUsername.id);
             return undefined;
         }   
+
+        //check is organiser
 
         //check if event is private
         const check4 = await this.neo4jService.read('MATCH (a:EVENT:PRIVATE) WHERE a.id=$idEvent RETURN a.name',
@@ -233,6 +240,60 @@ export class EventsService {
         
             return res;
         }
+    }
+
+    async unparticipate(eventDtoWithUsername: EventDtoWithUsername){
+       
+        
+   
+        //check que l'invitation existe
+
+        const check1 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:INVITED_TO]-(b:USER {username: $usernameInvited})  RETURN a',
+        {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id});
+        
+        if(check1.records.length){
+
+                    
+            //update la réponse de l'invitation
+            Logger.log("has an invitation "+eventDtoWithUsername.id);
+            const res = await this.neo4jService.write('MATCH (a:EVENT)<-[c:INVITED_TO]-(b:USER {username: $usernameInvited})  SET c.response = "refused" RETURN c',
+            {usernameInvited: eventDtoWithUsername.username}
+            )
+            
+
+            if(!res.records.length){
+                Logger.log("change response in invitation failed");
+                return undefined;
+            }
+            Logger.log("change response in invitation to refused");
+        }   
+
+
+
+
+
+
+        //check if participate
+        const check2 = await this.neo4jService.read('MATCH (a:EVENT {id:$idEvent})<-[:PARTICIPATE]-(b:USER {username: $usernameInvited})  RETURN a',
+        {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id});
+
+        if(check2.records.length){
+            Logger.log("is participating to "+eventDtoWithUsername.id);
+            //delete relation
+                const res2 = await this.neo4jService.write('MATCH (a:EVENT {id:$idEvent})<-[c:PARTICIPATE]-(b:USER {username: $usernameInvited})  DELETE c RETURN b',
+                {usernameInvited: eventDtoWithUsername.username, idEvent: eventDtoWithUsername.id});
+               
+                if(!res2.records.length){
+                    Logger.log("delete relation failed");
+                    return undefined;
+                }
+                Logger.log("unparticipate succesful");
+
+                return res2;
+
+        }     
+
+        
     }
 
     /*async getAllEventByCategory(@Param('category') category: string){
