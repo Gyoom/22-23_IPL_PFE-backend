@@ -96,8 +96,8 @@ export class UsersService {
     }
 
     async updateUser(userDTO: UserDto ): Promise<any>{
-        const res = await this.neo4jService.write('MATCH (u:USER{mail:$mail}) SET u.username=$username, u.mdp =$mdp RETURN u AS user', 
-        { mail: userDTO.email,username: userDTO.username, mdp: userDTO.password });
+        const res = await this.neo4jService.write('MATCH (u:USER{mail:$mail}) SET u.nom=$name, u.prenom=$firstname, u.mdp =$mdp RETURN u AS user', 
+        { mail: userDTO.email,name: userDTO.name, firstname: userDTO.firstname, mdp: userDTO.password });
         try{
             res.records[0].get('user');
         }catch(error){
