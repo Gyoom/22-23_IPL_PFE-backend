@@ -38,6 +38,13 @@ export class UsersController {
         return await this.usersService.getAllFriends(param.username);
     }
 
+    //get all the users that arent the friend
+    @Get('nonfriends/:username')
+    public async getAllNonFriends(@Param() param): Promise<any> {
+        Logger.log("Requests : /users/nonfriends" + param.username);
+        return await this.usersService.getAllNonFriends(param.username);
+    }
+
     //create a friend
     @Post('/newfriends')
     public async putNewFriend(@Body() userFriendDto: UserFriendDto  ){
