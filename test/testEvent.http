@@ -67,6 +67,9 @@ content-type: application/json
 ### get all events by category
 GET http://localhost:4000/events/categories/Festival
 
+## get invite of a user
+GET http://localhost:4000/invites/romeo/invited
+
 
 
 
