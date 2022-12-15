@@ -50,6 +50,16 @@ export class EventsService {
 
         }*/
 
+        //check event not with same name
+        const check1 = await this.neo4jService.read('MATCH (n:EVENT {name: $name}) RETURN n AS event',
+        {name: event.name})
+
+        if(check1.records.length){
+            Logger.log("check 1, event already exists");
+            return undefined;
+        }
+
+
         const id = uuidv4();
         var res;
 
@@ -57,14 +67,14 @@ export class EventsService {
         if(event.statut == "public") {
             Logger.log("create public event")
              res = await this.neo4jService.write(
-                'CREATE (event:EVENT:PUBLIC {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}) RETURN event',
-                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description});       
+                'CREATE (event:EVENT:PUBLIC {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, creation_date: $creation_date, description: $description}) RETURN event',
+                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, creation_date: event.creation_date, description: event.description});       
         }
         if(event.statut == "private") {
             Logger.log("create private event")
             res = await this.neo4jService.write(
-                'CREATE (event:EVENT:PRIVATE {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, description: $description}) RETURN event',
-                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, description: event.description});       
+                'CREATE (event:EVENT:PRIVATE {id:$id, name: $name, starting_date: $starting_date, ending_date: $ending_date, creation_date: $creation_date, description: $description}) RETURN event',
+                {id: id, name: event.name, starting_date: event.starting_date, ending_date: event.ending_date, creation_date: event.creation_date, description: event.description});       
         }
         
         

@@ -50,6 +50,7 @@ content-type: application/json
     "name":"Birthday party",
     "starting_date":"15-12-2022",
     "ending_date":"25-12-2022",
+    "creation_date":"15-12-2022",
     "description":"description",
     "username":"antony",
     "statut":"private"
